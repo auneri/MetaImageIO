@@ -131,7 +131,7 @@ def read_image(filepath, slices=None, memmap=False):
             raise ValueError('HeaderSizePerSlice is not supported with memmap')
         if len(header['ElementDataFile']) != 1:
             raise ValueError('Only single ElementDataFile is supported with memmap')
-        if slices:
+        if slices is not None:
             raise ValueError('Specifying slices is not supported with memmap')
         datapath = pathlib.Path(header['ElementDataFile'][0])
         if not datapath.is_absolute():
