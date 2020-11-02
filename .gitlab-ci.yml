@@ -12,7 +12,8 @@ test:win:
     - call conda.bat env update --prefix .\environment
     - call activate.bat .\environment
   script: pytest
-  after_script: call conda.bat env remove --prefix .\environment
+  after_script:
+    - call conda.bat env remove --prefix .\environment
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.7", "3.8"]
@@ -28,7 +29,8 @@ test:linux:
     - conda env update --prefix ./environment
     - source activate ./environment
   script: pytest
-  after_script: conda env remove --prefix ./environment
+  after_script:
+    - conda env remove --prefix ./environment
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.7", "3.8"]
