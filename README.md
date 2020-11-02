@@ -21,3 +21,9 @@ import pymetaio as mio
 imageio.formats.add_format(mio.imageio)
 image = imageio.imread('/path/to/image.mha', format='pymetaio')
 ```
+
+Use in MATLAB.
+
+```matlab
+[image, header] = pymetaio.read_image('/path/to/image.mha');
+```
