@@ -1,8 +1,7 @@
 stages:
  - test
- - deploy
 
-test:win:
+test:
   stage: test
   tags:
     - whitehole
@@ -14,23 +13,6 @@ test:win:
   script: pytest
   after_script:
     - call conda.bat env remove --prefix .\environment
-  parallel:
-    matrix:
-      - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
-        DUMMY: ["dummy"]
-
-test:linux:
-  stage: test
-  tags:
-    - tartarus
-    - shell
-  before_script:
-    - conda create --yes --prefix ./environment python=$PYTHON_VERSION
-    - conda env update --prefix ./environment
-    - source activate ./environment
-  script: pytest
-  after_script:
-    - conda env remove --prefix ./environment
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
