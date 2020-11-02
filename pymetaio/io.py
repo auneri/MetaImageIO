@@ -114,8 +114,8 @@ def read_image(filepath, slices=None, memmap=False):
         elif key == 'ElementType':
             try:
                 header[key] = [x[1] for x in MHD_TYPES.items() if x[0] == value.upper()][0]
-            except IndexError:
-                raise IOError(f'ElementType "{value}" is not supported')
+            except IndexError as exception:
+                raise ValueError(f'ElementType "{value}" is not supported') from exception
 
     # read image from file
     shape = np.array(header['DimSize'][::-1])
@@ -124,15 +124,15 @@ def read_image(filepath, slices=None, memmap=False):
     element_size = np.dtype(header['ElementType']).itemsize
     if memmap:
         if header.get('BinaryDataByteOrderMSB') or header.get('ElementByteOrderMSB'):
-            raise IOError('ByteOrderMSB is not supported with memmap')
+            raise ValueError('ByteOrderMSB is not supported with memmap')
         if header.get('CompressedData'):
-            raise IOError('CompressedData is not supported with memmap')
+            raise ValueError('CompressedData is not supported with memmap')
         if header['HeaderSizePerSlice'] is not None:
-            raise IOError('HeaderSizePerSlice is not supported with memmap')
+            raise ValueError('HeaderSizePerSlice is not supported with memmap')
         if len(header['ElementDataFile']) != 1:
-            raise IOError('Only single ElementDataFile is supported with memmap')
+            raise ValueError('Only single ElementDataFile is supported with memmap')
         if slices:
-            raise IOError('Specifying slices is not supported with memmap')
+            raise ValueError('Specifying slices is not supported with memmap')
         datapath = pathlib.Path(header['ElementDataFile'][0])
         if not datapath.is_absolute():
             datapath = filepath.parent / datapath
@@ -147,9 +147,9 @@ def read_image(filepath, slices=None, memmap=False):
             slices = range(shape[0])
         slices = tuple(slices)
         if np.any(np.diff(slices) <= 0):
-            raise IOError('Slices must be strictly increasing')
+            raise ValueError('Slices must be strictly increasing')
         if slices and (slices[0] < 0 or slices[-1] >= shape[0]):
-            raise IOError('Slices must be bounded by z dimension')
+            raise ValueError('Slices must be bounded by z dimension')
         if len(header['ElementDataFile']) > 1:
             shape[0] = 1
         data = io.BytesIO()
@@ -164,11 +164,11 @@ def read_image(filepath, slices=None, memmap=False):
                 f.seek((header.get('HeaderSize') or 0), 1)
                 if header.get('CompressedData'):
                     if header['CompressedDataSize'] is None:
-                        raise IOError('CompressedDataSize needs to be specified when using CompressedData')
+                        raise ValueError('CompressedDataSize needs to be specified when using CompressedData')
                     if header['HeaderSizePerSlice'] is not None:
-                        raise IOError('HeaderSizePerSlice is not supported with compressed images')
+                        raise ValueError('HeaderSizePerSlice is not supported with compressed images')
                     if len(header['ElementDataFile']) == 1 and slices != tuple(range(shape[0])):
-                        raise IOError('Specifying slices with compressed images is not supported')
+                        raise ValueError('Specifying slices with compressed images is not supported')
                     data.write(zlib.decompress(f.read(header['CompressedDataSize'])))
                 else:
                     read, seek = np.intp(0), np.intp(0)
@@ -251,7 +251,7 @@ def write_image(filepath, image=None, **kwargs):
             datapaths = header['ElementDataFile']
             mode = 'wb'
             if np.ndim(image) != 3 or np.shape(image)[2] != len(datapaths):
-                raise IOError('Number filenames does not match number of slices')
+                raise ValueError('Number filenames does not match number of slices')
         else:
             datapaths = [header['ElementDataFile']]
             mode = 'wb'
@@ -270,8 +270,8 @@ def write_image(filepath, image=None, **kwargs):
         elif key == 'ElementType':
             try:
                 header_out[key] = [x[0] for x in MHD_TYPES.items() if np.issubdtype(value, x[1])][0]
-            except IndexError:
-                raise IOError(f'ElementType "{value}" is not supported')
+            except IndexError as exception:
+                raise ValueError(f'ElementType "{value}" is not supported') from exception
         elif key == 'ElementDataFile':
             if isinstance(value, (tuple, list)):
                 header_out[key] = 'LIST'
@@ -280,7 +280,7 @@ def write_image(filepath, image=None, **kwargs):
             else:
                 header_out[key] = value
         else:
-            raise IOError(f'Header tag "{key}" is not recognized')
+            raise ValueError(f'Header tag "{key}" is not recognized')
 
     # write header to file
     with filepath.open('w') as f:
