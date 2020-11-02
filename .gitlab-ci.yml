@@ -16,7 +16,7 @@ test:win:
     - call conda.bat env remove --prefix .\environment
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.7", "3.8"]
+      - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
         DUMMY: ["dummy"]
 
 test:linux:
@@ -33,5 +33,5 @@ test:linux:
     - conda env remove --prefix ./environment
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.7", "3.8"]
+      - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
         DUMMY: ["dummy"]
