@@ -1,0 +1,18 @@
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.7
+  # test requirements
+  - flake8>=3.8
+  - flake8-builtins
+  - flake8-comprehensions
+  - flake8-import-order
+  - flake8-mutable
+  - flake8-polyfill
+  - pytest>=6.1
+  - pytest-flake8
+  # pip requirements
+  - pip>=20.2
+  - pip:
+    - --editable .
