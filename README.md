@@ -6,11 +6,18 @@
 pip install git+https://git.lcsr.jhu.edu/auneri1/pyMetaIO.git
 ```
 
-## Testing
+Read images with `.mha` and `.mhd` extension.
 
-```shell
-cd pyMetaIO
-conda env create --name pyMetaIO --file environment.yml
-conda activate pyMetaIO
-pytest
+```python
+import pymetaio as mio
+image, header = mio.read_image('/path/to/image.mha')
+```
+
+Register as a plugin to `imageio`.
+
+```python
+import imageio
+import pymetaio as mio
+imageio.formats.add_format(mio.imageio)
+image = imageio.imread('/path/to/image.mha', format='pymetaio')
 ```
