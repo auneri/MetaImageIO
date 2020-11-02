@@ -7,12 +7,11 @@ test:
     - whitehole
     - shell
   before_script:
-    - call conda.bat create --yes --prefix .\environment python=%PYTHON_VERSION%
-    - call conda.bat env update --prefix .\environment
-    - call activate.bat .\environment
-  script: pytest
+    - conda create --yes --prefix .\environment python=%PYTHON_VERSION%
+    - conda env update --prefix .\environment
+  script: conda run --prefix .\environment --no-capture-output pytest
   after_script:
-    - call conda.bat env remove --prefix .\environment
+    - conda env remove --prefix .\environment
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
