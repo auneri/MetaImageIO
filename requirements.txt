@@ -1,1 +1,2 @@
+imageio>=2.9
 numpy>1.19
