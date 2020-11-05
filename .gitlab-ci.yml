@@ -18,6 +18,21 @@ test:
       - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
         DUMMY: ["dummy"]
 
+conda:
+  stage: deploy
+  tags:
+    - whitehole
+    - shell
+  only:
+    refs:
+      - master
+  before_script:
+    - $PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
+  script: conda build --channel http://istar-whitehole/conda --output-folder .\conda-build .\conda
+  after_script:
+    - Copy-Item -Path ".\conda-build\noarch\*.tar.bz2" -Destination "C:\istar\server\conda\noarch" -Recurse
+    - conda index C:\istar\server\conda
+
 pip:
   stage: deploy
   tags:
