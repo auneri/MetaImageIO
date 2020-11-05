@@ -10,7 +10,7 @@ test:
   before_script:
     - conda create --yes --prefix .\environment python=%PYTHON_VERSION%
     - conda env update --prefix .\environment
-  script: conda run --prefix .\environment --no-capture-output pytest
+  script: conda run --prefix .\environment --no-capture-output pytest --cov --ignore=environment
   after_script:
     - conda env remove --prefix .\environment
   parallel:
