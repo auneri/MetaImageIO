@@ -34,7 +34,7 @@ class MetaIOFormat(Format):
         def _get_meta_data(self, index):
             if index != 0:
                 raise NotImplementedError('pyMetaIO does not support non-zero indices')
-            _, header = io.read_image(self._filepath, slices=())[1]
+            _, header = io.read_image(self._filepath, slices=())
             return header
 
     class Writer(Format.Writer):
