@@ -27,7 +27,7 @@ pip:
     refs:
       - master
   before_script:
-    - export PYMETAIO_COMMIT_COUNT=`git rev-list --count HEAD`
+    - $PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: python setup.py sdist bdist_wheel
   after_script:
     - Copy-Item -Path ".\dist\*" -Destination "C:\istar\server\pip\pymetaio" -Recurse
