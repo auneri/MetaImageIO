@@ -2,7 +2,13 @@
 
 ## Getting started
 
-Install via `pip`.
+Install via `conda` (recommended)...
+
+```shell
+conda install -c http://istar-whitehole/conda pymetaio
+```
+
+... or via `pip`.
 
 ```shell
 pip install --extra-index-url http://istar-whitehole/pip --trusted-host istar-whitehole pymetaio
