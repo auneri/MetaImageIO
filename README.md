@@ -2,8 +2,12 @@
 
 ## Getting started
 
+Install via `pip`.
+
 ```shell
-pip install git+https://git.lcsr.jhu.edu/auneri1/pyMetaIO.git
+pip install --extra-index-url http://istar-whitehole/pip --trusted-host istar-whitehole pymetaio
+pip install git+https://git.lcsr.jhu.edu/auneri1/pymetaio.git
+pip install /path/to/pymetaio
 ```
 
 Read images with `.mha` and `.mhd` extension.
