@@ -1,4 +1,5 @@
 import numpy as np
+from imageio import formats
 from imageio.core import Format
 
 from . import io
@@ -52,8 +53,10 @@ class MetaIOFormat(Format):
             raise NotImplementedError('pyMetaIO does not support writing meta data')
 
 
-metaio_format = MetaIOFormat(
-    'pymetaio',
-    'MetaIO',
-    ' '.join(EXTENSIONS),
-    'iv')
+def plugin(name='PYMETAIO'):
+    if name.upper() not in formats.get_format_names():
+        formats.add_format(MetaIOFormat(
+            name,
+            'MetaIO',
+            ' '.join(EXTENSIONS),
+            'iv'))
