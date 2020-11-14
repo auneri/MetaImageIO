@@ -196,7 +196,7 @@ def read_image(filepath, slices=None, memmap=False):
             shape[0] = len(slices)
             image = np.frombuffer(data.getbuffer(), dtype=meta['ElementType']).reshape(shape)
             if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
-                image.byteswap(True)
+                image.byteswap(inplace=True)
         else:
             image = None
 
@@ -297,7 +297,7 @@ def write_image(filepath, image=None, **kwargs):
                 datapath = filepath.parent / datapath
             data = image[i] if len(datapaths) > 1 else image
             if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
-                data.byteswap(True)
+                data.byteswap(inplace=True)
             data = data.astype(meta['ElementType']).tobytes()
             if meta.get('CompressedData'):
                 data = zlib.compress(data)

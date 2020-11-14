@@ -46,7 +46,7 @@ class MetaIOFormat(Format):
             pass
 
         def _append_data(self, im, meta):
-            io.write_image(self._filepath, image=im, meta=meta)
+            io.write_image(self._filepath, image=im, **meta)
 
         def set_meta_data(self, meta):
             raise NotImplementedError('pyMetaIO does not support writing meta data')

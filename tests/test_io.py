@@ -28,7 +28,7 @@ def file_with_suffix(suffix):
 def test_compression(dtype):
     with file_with_suffix('.mhd') as f:
         a = (100 * np.random.random_sample((2, 3, 4))).astype(dtype)
-        mio.write_image(f, a, meta={'CompressedData': True})
+        mio.write_image(f, a, CompressedData=True)
         b, _ = mio.read_image(f)
         np.testing.assert_almost_equal(b, a)
 
