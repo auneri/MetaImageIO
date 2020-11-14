@@ -255,6 +255,16 @@ def write_image(filepath, image=None, **kwargs):
         else:
             datapaths = [meta['ElementDataFile']]
             mode = 'wb'
+        if meta.get('CompressedData'):
+            meta['CompressedDataSize'] = 0
+            for i, datapath in enumerate(datapaths):
+                datapath = pathlib.Path(datapath)
+                if not datapath.is_absolute():
+                    datapath = filepath.parent / datapath
+                data = image[i] if len(datapaths) > 1 else image
+                data = data.astype(meta['ElementType']).tobytes()
+                data = zlib.compress(data)
+                meta['CompressedDataSize'] += len(data)
 
     # typecast metadata to string
     meta_out = {}
@@ -289,8 +299,6 @@ def write_image(filepath, image=None, **kwargs):
 
     # write image to file
     if image is not None:
-        if meta.get('CompressedData'):
-            meta['CompressedDataSize'] = 0
         for i, datapath in enumerate(datapaths):
             datapath = pathlib.Path(datapath)
             if not datapath.is_absolute():
@@ -301,7 +309,6 @@ def write_image(filepath, image=None, **kwargs):
             data = data.astype(meta['ElementType']).tobytes()
             if meta.get('CompressedData'):
                 data = zlib.compress(data)
-                meta['CompressedDataSize'] += len(data)
             with datapath.open(mode) as f:
                 f.write(data)
 
