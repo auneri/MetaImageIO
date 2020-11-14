@@ -7,14 +7,14 @@ source:
 
 build:
   noarch: python
-  script: pip install .
+  script: python -m pip install --no-deps --ignore-installed .
   string: g{{ GIT_FULL_HASH[:7] }}
 
 requirements:
   host:
     - imageio >=2.9
     - numpy >=1.19
-    - pip
+    - pip >=20.2
     - python >=3.6
   run:
     - {{ pin_compatible('imageio', min_pin='x.x', max_pin='') }}
