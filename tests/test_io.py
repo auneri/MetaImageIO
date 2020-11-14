@@ -28,17 +28,9 @@ def file_with_suffix(suffix):
 def test_compression(dtype):
     with file_with_suffix('.mhd') as f:
         a = (100 * np.random.random_sample((2, 3, 4))).astype(dtype)
-        mio.write_image(f, a, header={'CompressedData': True})
+        mio.write_image(f, a, meta={'CompressedData': True})
         b, _ = mio.read_image(f)
         np.testing.assert_almost_equal(b, a)
-
-
-def test_header():
-    with file_with_suffix('.mhd') as f:
-        a = np.random.random_sample((2, 3, 4))
-        mio.write_image(f, a)
-        b, _ = mio.read_image(f, slices=())
-        assert b is None
 
 
 @pytest.mark.parametrize('suffix', SUFFIX)
@@ -59,3 +51,11 @@ def test_memmap(dtype):
         b, _ = mio.read_image(f, memmap=True)
         np.testing.assert_almost_equal(b, a)
         del b
+
+
+def test_meta():
+    with file_with_suffix('.mhd') as f:
+        a = np.random.random_sample((2, 3, 4))
+        mio.write_image(f, a)
+        b, _ = mio.read_image(f, slices=())
+        assert b is None

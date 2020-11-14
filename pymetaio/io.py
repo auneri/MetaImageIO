@@ -58,15 +58,15 @@ MHD_TYPES = {
 def read_image(filepath, slices=None, memmap=False):
     filepath = pathlib.Path(filepath)
 
-    # read header from file
-    header_in = {}
-    header_size = 0
+    # read metadata from file
+    meta_in = {}
+    meta_size = 0
     islist = False
     islocal = False
     with filepath.open('rb') as f:
         for line in f:
             line = line.decode()
-            header_size += len(line)
+            meta_size += len(line)
             # skip empty and commented lines
             if not line or line.startswith('#'):
                 continue
@@ -75,72 +75,72 @@ def read_image(filepath, slices=None, memmap=False):
             # handle case variations
             try:
                 key = MHD_TAGS[[x.upper() for x in MHD_TAGS].index(key.upper())]
-                header_in[key] = value
+                meta_in[key] = value
             except ValueError:
                 pass
             # handle supported ElementDataFile formats
             if islist:
-                header_in['ElementDataFile'].append(line.strip())
+                meta_in['ElementDataFile'].append(line.strip())
             elif key == 'ElementDataFile' and value.upper() == 'LIST':
-                header_in['ElementDataFile'] = []
+                meta_in['ElementDataFile'] = []
                 islist = True
             elif key == 'ElementDataFile' and value.upper() == 'LOCAL':
-                header_in['ElementDataFile'] = [str(filepath)]
+                meta_in['ElementDataFile'] = [str(filepath)]
                 islocal = True
                 break
             elif key == 'ElementDataFile' and '%' in value:
                 args = value.split()
-                header_in['ElementDataFile'] = [args[0] % i for i in range(int(args[1]), int(args[2]) + int(args[3]), int(args[3]))]
+                meta_in['ElementDataFile'] = [args[0] % i for i in range(int(args[1]), int(args[2]) + int(args[3]), int(args[3]))]
             elif key == 'ElementDataFile':
-                header_in['ElementDataFile'] = [value]
+                meta_in['ElementDataFile'] = [value]
 
-    # typecast header tags to native types
-    header = dict.fromkeys(MHD_TAGS, None)
-    for key, value in header_in.items():
+    # typecast metadata to native types
+    meta = dict.fromkeys(MHD_TAGS, None)
+    for key, value in meta_in.items():
         if key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'):
-            header[key] = value
+            meta[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedDataSize', 'HeaderSize', 'HeaderSizePerSlice', 'ElementNumberOfChannels'):
-            header[key] = np.intp(value)
+            meta[key] = np.intp(value)
         elif key in ('CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'):
-            header[key] = value.upper() == 'TRUE'
+            meta[key] = value.upper() == 'TRUE'
         elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize'):
-            header[key] = np.array(value.split(), dtype=float)
+            meta[key] = np.array(value.split(), dtype=float)
         elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
-            header[key] = np.array(value.split(), dtype=float).reshape(3, 3)
+            meta[key] = np.array(value.split(), dtype=float).reshape(3, 3)
         elif key in ('DimSize', 'SequenceID'):
-            header[key] = np.array(value.split(), dtype=int)
+            meta[key] = np.array(value.split(), dtype=int)
         elif key in ('ElementMin', 'ElementMax'):
-            header[key] = float(value)
+            meta[key] = float(value)
         elif key == 'ElementType':
             try:
-                header[key] = [x[1] for x in MHD_TYPES.items() if x[0] == value.upper()][0]
+                meta[key] = [x[1] for x in MHD_TYPES.items() if x[0] == value.upper()][0]
             except IndexError as exception:
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
 
     # read image from file
-    shape = np.array(header['DimSize'][::-1])
-    if (header.get('ElementNumberOfChannels') or 1) > 1:
-        shape = np.r_[shape, header['ElementNumberOfChannels']]
-    element_size = np.dtype(header['ElementType']).itemsize
+    shape = np.array(meta['DimSize'][::-1])
+    if (meta.get('ElementNumberOfChannels') or 1) > 1:
+        shape = np.r_[shape, meta['ElementNumberOfChannels']]
+    element_size = np.dtype(meta['ElementType']).itemsize
     if memmap:
-        if header.get('BinaryDataByteOrderMSB') or header.get('ElementByteOrderMSB'):
+        if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
             raise ValueError('ByteOrderMSB is not supported with memmap')
-        if header.get('CompressedData'):
+        if meta.get('CompressedData'):
             raise ValueError('CompressedData is not supported with memmap')
-        if header['HeaderSizePerSlice'] is not None:
+        if meta['HeaderSizePerSlice'] is not None:
             raise ValueError('HeaderSizePerSlice is not supported with memmap')
-        if len(header['ElementDataFile']) != 1:
+        if len(meta['ElementDataFile']) != 1:
             raise ValueError('Only single ElementDataFile is supported with memmap')
         if slices is not None:
             raise ValueError('Specifying slices is not supported with memmap')
-        datapath = pathlib.Path(header['ElementDataFile'][0])
+        datapath = pathlib.Path(meta['ElementDataFile'][0])
         if not datapath.is_absolute():
             datapath = filepath.parent / datapath
         offset = 0
         if islocal:
-            offset += header_size
-        offset += header.get('HeaderSize') or 0
-        image = np.memmap(datapath, dtype=header['ElementType'], mode='c', offset=offset, shape=tuple(shape))
+            offset += meta_size
+        offset += meta.get('HeaderSize') or 0
+        image = np.memmap(datapath, dtype=meta['ElementType'], mode='c', offset=offset, shape=tuple(shape))
     else:
         increment = np.prod(shape[1:], dtype=np.intp) * np.intp(element_size)
         if slices is None:
@@ -150,34 +150,34 @@ def read_image(filepath, slices=None, memmap=False):
             raise ValueError('Slices must be strictly increasing')
         if slices and (slices[0] < 0 or slices[-1] >= shape[0]):
             raise ValueError('Slices must be bounded by z dimension')
-        if len(header['ElementDataFile']) > 1:
+        if len(meta['ElementDataFile']) > 1:
             shape[0] = 1
         data = io.BytesIO()
 
-        for i, datapath in enumerate(header['ElementDataFile']):
+        for i, datapath in enumerate(meta['ElementDataFile']):
             datapath = pathlib.Path(datapath)
             if not datapath.is_absolute():
                 datapath = filepath.parent / datapath
             with datapath.open('rb') as f:
                 if islocal:
-                    f.seek(header_size, 1)
-                f.seek((header.get('HeaderSize') or 0), 1)
-                if header.get('CompressedData'):
-                    if header['CompressedDataSize'] is None:
+                    f.seek(meta_size, 1)
+                f.seek((meta.get('HeaderSize') or 0), 1)
+                if meta.get('CompressedData'):
+                    if meta['CompressedDataSize'] is None:
                         raise ValueError('CompressedDataSize needs to be specified when using CompressedData')
-                    if header['HeaderSizePerSlice'] is not None:
+                    if meta['HeaderSizePerSlice'] is not None:
                         raise ValueError('HeaderSizePerSlice is not supported with compressed images')
-                    if len(header['ElementDataFile']) == 1 and slices != tuple(range(shape[0])):
+                    if len(meta['ElementDataFile']) == 1 and slices != tuple(range(shape[0])):
                         raise ValueError('Specifying slices with compressed images is not supported')
-                    data.write(zlib.decompress(f.read(header['CompressedDataSize'])))
+                    data.write(zlib.decompress(f.read(meta['CompressedDataSize'])))
                 else:
                     read, seek = np.intp(0), np.intp(0)
                     for j in range(shape[0]):
-                        if header['HeaderSizePerSlice'] is not None:
+                        if meta['HeaderSizePerSlice'] is not None:
                             data.write(f.read(read))
                             read = np.intp(0)
-                            seek += header['HeaderSizePerSlice']
-                        if (len(header['ElementDataFile']) == 1 and j in slices) or (len(header['ElementDataFile']) > 1 and i in slices):
+                            seek += meta['HeaderSizePerSlice']
+                        if (len(meta['ElementDataFile']) == 1 and j in slices) or (len(meta['ElementDataFile']) > 1 and i in slices):
                             f.seek(seek, 1)
                             seek = np.intp(0)
                             read += increment
@@ -194,118 +194,118 @@ def read_image(filepath, slices=None, memmap=False):
                     data.write(f.read(read))
         if slices:
             shape[0] = len(slices)
-            image = np.frombuffer(data.getbuffer(), dtype=header['ElementType']).reshape(shape)
-            if header.get('BinaryDataByteOrderMSB') or header.get('ElementByteOrderMSB'):
+            image = np.frombuffer(data.getbuffer(), dtype=meta['ElementType']).reshape(shape)
+            if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
                 image.byteswap(True)
         else:
             image = None
 
-    # remove unused tags from header
-    header = {x: y for x, y in header.items() if y is not None}
-    if isinstance(header['ElementDataFile'], (tuple, list)):
-        header['ElementDataFile'] = header['ElementDataFile'][0]
+    # remove unused metadata
+    meta = {x: y for x, y in meta.items() if y is not None}
+    if isinstance(meta['ElementDataFile'], (tuple, list)):
+        meta['ElementDataFile'] = meta['ElementDataFile'][0]
 
-    return image, header
+    return image, meta
 
 
 def write_image(filepath, image=None, **kwargs):
     filepath = pathlib.Path(filepath)
 
-    # initialize header
-    header = dict.fromkeys(MHD_TAGS, None)
-    header['ObjectType'] = 'Image'
-    header['NDims'] = 3
-    header['BinaryData'] = True
-    header['BinaryDataByteOrderMSB'] = False
-    header['ElementSpacing'] = np.ones(3)
-    header['DimSize'] = np.zeros(3, np.int)
-    header['ElementType'] = float
+    # initialize metadata
+    meta = dict.fromkeys(MHD_TAGS, None)
+    meta['ObjectType'] = 'Image'
+    meta['NDims'] = 3
+    meta['BinaryData'] = True
+    meta['BinaryDataByteOrderMSB'] = False
+    meta['ElementSpacing'] = np.ones(3)
+    meta['DimSize'] = np.zeros(3, np.int)
+    meta['ElementType'] = float
     if image is not None:
-        header['NDims'] = np.ndim(image)
-        header['ElementSpacing'] = np.ones(np.ndim(image))
-        header['DimSize'] = np.shape(image)[::-1]
-        header['ElementType'] = np.asarray(image).dtype
+        meta['NDims'] = np.ndim(image)
+        meta['ElementSpacing'] = np.ones(np.ndim(image))
+        meta['DimSize'] = np.shape(image)[::-1]
+        meta['ElementType'] = np.asarray(image).dtype
 
-    # overwrite input header tags (case incensitive)
+    # input metadata (case incensitive)
     for key, value in kwargs.items():
         try:
             key = MHD_TAGS[[x.upper() for x in MHD_TAGS].index(key.upper())]
         except ValueError:
             pass
         else:
-            header[key] = value
+            meta[key] = value
 
     # define ElementDataFile
-    if header['ElementDataFile'] is None:
+    if meta['ElementDataFile'] is None:
         if filepath.suffix == '.mha':
-            header['ElementDataFile'] = 'LOCAL'
+            meta['ElementDataFile'] = 'LOCAL'
         else:
-            header['ElementDataFile'] = str(filepath.with_suffix('.zraw' if header.get('CompressedData') else '.raw'))
+            meta['ElementDataFile'] = str(filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw'))
 
     # prepare image for saving
     if image is not None:
-        if header['ElementDataFile'].upper() == 'LOCAL':
+        if meta['ElementDataFile'].upper() == 'LOCAL':
             datapaths = [str(filepath)]
             mode = 'ab'
-        elif isinstance(header['ElementDataFile'], (tuple, list)):
-            datapaths = header['ElementDataFile']
+        elif isinstance(meta['ElementDataFile'], (tuple, list)):
+            datapaths = meta['ElementDataFile']
             mode = 'wb'
             if np.ndim(image) != 3 or np.shape(image)[2] != len(datapaths):
                 raise ValueError('Number filenames does not match number of slices')
         else:
-            datapaths = [header['ElementDataFile']]
+            datapaths = [meta['ElementDataFile']]
             mode = 'wb'
 
-    # typecast header tags to string
-    header_out = {}
-    for key, value in header.items():
+    # typecast metadata to string
+    meta_out = {}
+    for key, value in meta.items():
         if value is None:
             continue
         elif key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality'):
-            header_out[key] = value
+            meta_out[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin', 'ElementMax', 'ElementNumberOfChannels'):
-            header_out[key] = str(value)
+            meta_out[key] = str(value)
         elif key in ('Color', 'Position', 'Offset', 'Origin', 'Orientation', 'Rotation', 'TransformMatrix', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'SequenceID', 'ElementSize'):
-            header_out[key] = ' '.join(str(x) for x in np.ravel(value))
+            meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
         elif key == 'ElementType':
             try:
-                header_out[key] = [x[0] for x in MHD_TYPES.items() if np.issubdtype(value, x[1])][0]
+                meta_out[key] = [x[0] for x in MHD_TYPES.items() if np.issubdtype(value, x[1])][0]
             except IndexError as exception:
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
         elif key == 'ElementDataFile':
             if isinstance(value, (tuple, list)):
-                header_out[key] = 'LIST'
+                meta_out[key] = 'LIST'
                 for i in value:
-                    header_out[key] += f'\n{i}'
+                    meta_out[key] += f'\n{i}'
             else:
-                header_out[key] = value
+                meta_out[key] = value
         else:
             raise ValueError(f'Header tag "{key}" is not recognized')
 
-    # write header to file
+    # write metadata to file
     with filepath.open('w') as f:
-        for key, value in header_out.items():
+        for key, value in meta_out.items():
             f.write(f'{key} = {value}\n')
 
     # write image to file
     if image is not None:
-        if header.get('CompressedData'):
-            header['CompressedDataSize'] = 0
+        if meta.get('CompressedData'):
+            meta['CompressedDataSize'] = 0
         for i, datapath in enumerate(datapaths):
             datapath = pathlib.Path(datapath)
             if not datapath.is_absolute():
                 datapath = filepath.parent / datapath
             data = image[i] if len(datapaths) > 1 else image
-            if header.get('BinaryDataByteOrderMSB') or header.get('ElementByteOrderMSB'):
+            if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
                 data.byteswap(True)
-            data = data.astype(header['ElementType']).tobytes()
-            if header.get('CompressedData'):
+            data = data.astype(meta['ElementType']).tobytes()
+            if meta.get('CompressedData'):
                 data = zlib.compress(data)
-                header['CompressedDataSize'] += len(data)
+                meta['CompressedDataSize'] += len(data)
             with datapath.open(mode) as f:
                 f.write(data)
 
-    # remove unused tags from header
-    header = {x: y for x, y in header.items() if y is not None}
+    # remove unused metadata
+    meta = {x: y for x, y in meta.items() if y is not None}
 
-    return header
+    return meta
