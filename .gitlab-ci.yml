@@ -9,7 +9,6 @@ test:
     - shell
   before_script:
     - conda create --yes --prefix .\environment python=%PYTHON_VERSION%
-    - conda env update --prefix .\environment
   script: conda run --prefix .\environment --no-capture-output pytest --cov --ignore=environment
   after_script:
     - conda env remove --prefix .\environment
@@ -28,7 +27,6 @@ pip:
       - master
   before_script:
     - conda create --yes --prefix .\environment
-    - conda env update --prefix .\environment
     - $Env:PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: conda run --prefix .\environment --no-capture-output python setup.py sdist bdist_wheel
   after_script:
