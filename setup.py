@@ -16,8 +16,7 @@ setuptools.setup(
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     author='Ali Uneri',
-    maintainer='Ali Uneri',
-    maintainer_email='ali.uneri@jhu.edu',
+    author_email='ali.uneri@jhu.edu',
     classifiers=[
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3'],
