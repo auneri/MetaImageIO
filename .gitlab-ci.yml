@@ -32,6 +32,7 @@ pip:
     - $Env:PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: conda run --prefix .\environment --no-capture-output python setup.py sdist bdist_wheel
   after_script:
+    - New-Item -Path "C:\istar\server\pip\pymetaio" -ItemType Directory -Force
     - Copy-Item -Path ".\dist\*" -Destination "C:\istar\server\pip\pymetaio" -Recurse
 
 conda:
