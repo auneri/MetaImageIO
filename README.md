@@ -28,7 +28,7 @@ Register as a plugin to `imageio`.
 ```python
 import imageio
 import pymetaio as mio
-imageio.formats.add_format(mio.imageio)
+mio.imageio.plugin()
 image = imageio.imread('/path/to/image.mha', format='pymetaio')
 ```
 
