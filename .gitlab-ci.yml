@@ -45,7 +45,7 @@ conda:
       - master
   before_script:
     - $Env:PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
-  script: conda build --output-folder .\conda-build .\conda
+  script: conda build --channel conda-forge --output-folder .\conda-build .\conda
   after_script:
     - Copy-Item -Path ".\conda-build\noarch\*.tar.bz2" -Destination "C:\istar\server\conda\noarch" -Recurse
     - conda index C:\istar\server\conda
