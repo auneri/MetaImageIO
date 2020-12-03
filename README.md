@@ -1,5 +1,7 @@
 # pyMetaIO
 
+Python implementation of the MetaIO file format.
+
 ## Getting started
 
 Install via `conda` (recommended)...

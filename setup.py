@@ -12,7 +12,7 @@ def read(filename):
 
 setuptools.setup(
     name='pymetaio',
-    description='',
+    description=read('README.md').splitlines()[2],
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     author='Ali Uneri',
