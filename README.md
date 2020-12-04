@@ -21,16 +21,16 @@ pip install /path/to/pymetaio
 Read images with `.mha` and `.mhd` extension.
 
 ```python
-import pymetaio as mio
-image, meta = mio.read_image('/path/to/image.mha')
+import pymetaio
+image, meta = pymetaio.read_image('/path/to/image.mha')
 ```
 
 Register as a plugin to `imageio`.
 
 ```python
 import imageio
-import pymetaio as mio
-mio.imageio.plugin()
+import pymetaio
+pymetaio.imageio.plugin()
 image = imageio.imread('/path/to/image.mha', format='pymetaio')
 ```
 
