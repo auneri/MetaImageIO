@@ -31,7 +31,7 @@ Register as a plugin to `imageio`.
 import imageio
 import pymetaio
 pymetaio.imageio.plugin()
-image = imageio.imread('/path/to/image.mha', format='pymetaio')
+image = imageio.imread('/path/to/image.mha')
 ```
 
 Use in MATLAB.

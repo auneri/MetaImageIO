@@ -17,7 +17,7 @@ class MetaIOFormat(Format):
 
     class Reader(Format.Reader):
 
-        def _open(self):
+        def _open(self, **kwargs):
             self._filepath = self.request.get_local_filename()
 
         def _close(self):
@@ -26,10 +26,12 @@ class MetaIOFormat(Format):
         def _get_length(self):
             return np.inf
 
-        def _get_data(self, index):
+        def _get_data(self, index, **kwargs):
             if index != 0:
                 raise NotImplementedError('pyMetaIO does not support non-zero indices')
-            image, meta = io.read_image(self._filepath)
+            image, meta = io.read_image(self._filepath, **self.request.kwargs)
+            if image is None:
+                image = np.array(())
             return image, meta
 
         def _get_meta_data(self, index):
@@ -40,13 +42,15 @@ class MetaIOFormat(Format):
 
     class Writer(Format.Writer):
 
-        def _open(self):
+        def _open(self, **kwargs):
             self._filepath = self.request.get_local_filename()
 
         def _close(self):
             pass
 
         def _append_data(self, im, meta):
+            meta.pop('ElementDataFile', None)
+            meta.update(self.request.kwargs)
             io.write_image(self._filepath, image=im, **meta)
 
         def set_meta_data(self, meta):
@@ -55,8 +59,11 @@ class MetaIOFormat(Format):
 
 def plugin(name='PYMETAIO'):
     if name.upper() not in formats.get_format_names():
+        names = formats.get_format_names()
         formats.add_format(MetaIOFormat(
             name,
             'MetaIO',
             ' '.join(EXTENSIONS),
             'iv'))
+        formats.sort(name, *names)
+    return name
