@@ -11,15 +11,13 @@ build:
   string: g{{ GIT_FULL_HASH[:7] }}
 
 requirements:
-  host:
+  build:
+    - pip
+    - python
+  run:
     - imageio >=2.9
     - numpy >=1.19
-    - pip >=20.2
-    - python >=3.6
-  run:
-    - {{ pin_compatible('imageio', min_pin='x.x', max_pin='') }}
-    - {{ pin_compatible('numpy', min_pin='x.x', max_pin='') }}
-    - {{ pin_compatible('python', min_pin='x.x', max_pin='') }}
+    - python
 
 test:
   imports:
