@@ -1,14 +1,5 @@
-function meta = write_image(filepath, image)
-    meta = py.pymetaio.write_image(filepath, image);
-    meta = meta.struct();
-    for fieldname = fieldnames(meta)'
-        field = meta.(char(fieldname));
-        if isa(field, 'py.str') || isa(field, 'py.type')
-            meta.(char(fieldname)) = field.char();
-        elseif isa(field, 'py.numpy.ndarray') | isa(field, 'py.numpy.int64')
-            meta.(char(fieldname)) = field.numeric();
-        elseif startsWith(class(field), 'py.')
-            warning('pymetaio:write_image', 'Python type "%s" is not supported', class(field));
-        end
-    end
+function meta = write_image(filepath, image, varargin)
+    image = permute(image, ndims(image):-1:1);
+    meta = py.pymetaio.write_image(filepath, py.numpy.asarray(image), pyargs(varargin{:}));
+    meta = pymetaio.py2mat(meta);
 end
