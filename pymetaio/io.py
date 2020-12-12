@@ -240,7 +240,7 @@ def write_image(filepath, image=None, **kwargs):
         if filepath.suffix == '.mha':
             meta['ElementDataFile'] = 'LOCAL'
         else:
-            meta['ElementDataFile'] = str(filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw'))
+            meta['ElementDataFile'] = filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw').name
 
     # prepare image for saving
     if image is not None:
