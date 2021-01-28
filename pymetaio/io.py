@@ -5,7 +5,7 @@ import zlib
 import numpy as np
 
 
-# http://www.itk.org/Wiki/ITK/MetaIO/Documentation
+# https://itk.org/Wiki/ITK/MetaIO/Documentation#Reference:_Tags_of_MetaImage
 MHD_TAGS = (
     'Comment',                  # MET_STRING
     'ObjectType',               # MET_STRING (Image)
