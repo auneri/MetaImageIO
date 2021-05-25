@@ -6,7 +6,7 @@ import numpy as np
 import pymetaio
 import pytest
 
-DTYPE = np.byte, np.ubyte, np.short, np.ushort, np.int, np.uint, np.single, np.double
+DTYPE = np.int8, np.uint8, np.int16, np.uint16, np.int32, np.uint32, np.int64, np.uint64, np.float32, np.float64
 SUFFIX = '.mha', '.mhd'
 
 

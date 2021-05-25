@@ -218,7 +218,7 @@ def write_image(filepath, image=None, **kwargs):
     meta['BinaryData'] = True
     meta['BinaryDataByteOrderMSB'] = False
     meta['ElementSpacing'] = np.ones(3)
-    meta['DimSize'] = np.zeros(3, np.int)
+    meta['DimSize'] = np.zeros(3, dtype=int)
     meta['ElementType'] = float
     if image is not None:
         meta['NDims'] = np.ndim(image)
