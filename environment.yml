@@ -1,21 +1,22 @@
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
   - imageio>=2.9
-  - numpy>=1.19
+  - numpy>=1.20
   - python>=3.6
-  # test requirements
-  - flake8>=3.8
+  # test
+  - flake8>=3.9
   - flake8-builtins
   - flake8-comprehensions
   - flake8-import-order
   - flake8-mutable
-  - flake8-polyfill
-  - pytest>=6.1
+  - flake8-quotes
+  - pep8-naming
+  - pytest>=6.2
   - pytest-cov
   - pytest-flake8
-  # pip requirements
-  - pip>=20.2
+  # pip
+  - pip>=21.1
   - pip:
     - --editable .
