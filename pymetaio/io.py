@@ -118,7 +118,7 @@ def read_image(filepath, slices=None, memmap=False):
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
 
     # read image from file
-    shape = np.array(meta['DimSize'][::-1])
+    shape = meta['DimSize'].copy()[::-1]
     if (meta.get('ElementNumberOfChannels') or 1) > 1:
         shape = np.r_[shape, meta['ElementNumberOfChannels']]
     element_size = np.dtype(meta['ElementType']).itemsize
@@ -223,7 +223,7 @@ def write_image(filepath, image=None, **kwargs):
     if image is not None:
         meta['NDims'] = np.ndim(image)
         meta['ElementSpacing'] = np.ones(np.ndim(image))
-        meta['DimSize'] = np.shape(image)[::-1]
+        meta['DimSize'] = np.array(np.shape(image)[::-1])
         meta['ElementType'] = np.asarray(image).dtype
 
     # input metadata (case incensitive)
