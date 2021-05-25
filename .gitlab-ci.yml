@@ -6,7 +6,7 @@ test:
   stage: test
   tags:
     - whitehole
-    - shell
+    - powershell
   before_script:
     - conda create --yes --prefix .\environment python=%PYTHON_VERSION%
     - conda env update --prefix .\environment
@@ -21,7 +21,7 @@ pip:
   stage: deploy
   tags:
     - whitehole
-    - shell
+    - powershell
   only:
     refs:
       - master
@@ -38,7 +38,7 @@ conda:
   stage: deploy
   tags:
     - whitehole
-    - shell
+    - powershell
   only:
     refs:
       - master
