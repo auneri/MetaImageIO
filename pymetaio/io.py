@@ -100,7 +100,7 @@ def read_image(filepath, slices=None, memmap=False):
         if key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'):
             meta[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedDataSize', 'HeaderSize', 'HeaderSizePerSlice', 'ElementNumberOfChannels'):
-            meta[key] = np.intp(value)
+            meta[key] = np.uintp(value)
         elif key in ('CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'):
             meta[key] = value.upper() == 'TRUE'
         elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize'):
@@ -142,7 +142,7 @@ def read_image(filepath, slices=None, memmap=False):
         offset += meta.get('HeaderSize') or 0
         image = np.memmap(datapath, dtype=meta['ElementType'], mode='c', offset=offset, shape=tuple(shape))
     else:
-        increment = np.prod(shape[1:], dtype=np.intp) * np.intp(element_size)
+        increment = np.prod(shape[1:], dtype=np.uintp) * np.uintp(element_size)
         if slices is None:
             slices = range(shape[0])
         slices = tuple(slices)
@@ -171,26 +171,26 @@ def read_image(filepath, slices=None, memmap=False):
                         raise ValueError('Specifying slices with compressed images is not supported')
                     data.write(zlib.decompress(f.read(meta['CompressedDataSize'])))
                 else:
-                    read, seek = np.intp(0), np.intp(0)
+                    read, seek = np.uintp(0), np.uintp(0)
                     for j in range(shape[0]):
                         if meta['HeaderSizePerSlice'] is not None:
                             data.write(f.read(read))
-                            read = np.intp(0)
+                            read = np.uintp(0)
                             seek += meta['HeaderSizePerSlice']
                         if (len(meta['ElementDataFile']) == 1 and j in slices) or (len(meta['ElementDataFile']) > 1 and i in slices):
                             f.seek(seek, 1)
-                            seek = np.intp(0)
+                            seek = np.uintp(0)
                             read += increment
-                            if read > np.iinfo(np.intp).max - increment:
+                            if read > np.iinfo(np.uintp).max - increment:
                                 data.write(f.read(read))
-                                read = np.intp(0)
+                                read = np.uintp(0)
                         else:
                             data.write(f.read(read))
-                            read = np.intp(0)
+                            read = np.uintp(0)
                             seek += increment
-                            if seek > np.iinfo(np.intp).max - increment:
+                            if seek > np.iinfo(np.uintp).max - increment:
                                 f.seek(seek, 1)
-                                seek = np.intp(0)
+                                seek = np.uintp(0)
                     data.write(f.read(read))
         if slices:
             shape[0] = len(slices)
