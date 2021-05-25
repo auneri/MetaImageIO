@@ -15,7 +15,7 @@ test:
     - conda env remove --prefix .\environment
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.6", "3.7", "3.8"]
+      - PYTHON_VERSION: ["3.6", "3.7", "3.8", "3.9"]
 
 pip:
   stage: deploy
