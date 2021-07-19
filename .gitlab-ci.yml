@@ -24,7 +24,7 @@ pip:
     - powershell
   only:
     refs:
-      - master
+      - main
   before_script:
     - conda create --yes --prefix .\environment
     - conda env update --prefix .\environment
@@ -41,7 +41,7 @@ conda:
     - powershell
   only:
     refs:
-      - master
+      - main
   before_script:
     - $Env:PYMETAIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: conda build --channel conda-forge --output-folder .\conda-build .\conda
