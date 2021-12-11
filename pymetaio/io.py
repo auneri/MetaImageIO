@@ -256,14 +256,16 @@ def write_image(filepath, image=None, **kwargs):
             mode = 'wb'
         if meta.get('CompressedData'):
             meta['CompressedDataSize'] = 0
-            for i, datapath in enumerate(datapaths):
-                datapath = pathlib.Path(datapath)
-                if not datapath.is_absolute():
-                    datapath = filepath.parent / datapath
-                data = image[i] if len(datapaths) > 1 else image
-                data = data.astype(meta['ElementType']).tobytes()
-                data = zlib.compress(data)
+        datas = []
+        for i, _ in enumerate(datapaths):
+            data = image[i] if len(datapaths) > 1 else image
+            if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
+                data.byteswap(inplace=True)
+            data = data.astype(meta['ElementType']).tobytes()
+            if meta.get('CompressedData'):
+                data = zlib.compress(data, level=2)
                 meta['CompressedDataSize'] += len(data)
+            datas.append(data)
 
     # typecast metadata to string
     meta_out = {}
@@ -302,14 +304,8 @@ def write_image(filepath, image=None, **kwargs):
             datapath = pathlib.Path(datapath)
             if not datapath.is_absolute():
                 datapath = filepath.parent / datapath
-            data = image[i] if len(datapaths) > 1 else image
-            if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
-                data.byteswap(inplace=True)
-            data = data.astype(meta['ElementType']).tobytes()
-            if meta.get('CompressedData'):
-                data = zlib.compress(data)
             with datapath.open(mode) as f:
-                f.write(data)
+                f.write(datas[i])
 
     # remove unused metadata
     meta = {x: y for x, y in meta.items() if y is not None}
