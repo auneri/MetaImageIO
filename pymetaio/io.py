@@ -6,7 +6,7 @@ import numpy as np
 
 
 # https://itk.org/Wiki/ITK/MetaIO/Documentation#Reference:_Tags_of_MetaImage
-MHD_TAGS = (
+TAGS = (
     'Comment',                  # MET_STRING
     'ObjectType',               # MET_STRING (Image)
     'ObjectSubType',            # MET_STRING
@@ -42,7 +42,7 @@ MHD_TAGS = (
     'ElementType',              # MET_STRING (MET_UINT)
     'ElementDataFile')          # MET_STRING
 
-MHD_TYPES = {
+TYPES = {
     'MET_CHAR': np.int8,
     'MET_UCHAR': np.uint8,
     'MET_SHORT': np.int16,
@@ -74,7 +74,7 @@ def read_image(filepath, slices=None, memmap=False):
             value = line.split('=', 1)[-1].strip()
             # handle case variations
             try:
-                key = MHD_TAGS[[x.upper() for x in MHD_TAGS].index(key.upper())]
+                key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
                 meta_in[key] = value
             except ValueError:
                 pass
@@ -95,7 +95,7 @@ def read_image(filepath, slices=None, memmap=False):
                 meta_in['ElementDataFile'] = [value]
 
     # typecast metadata to native types
-    meta = dict.fromkeys(MHD_TAGS, None)
+    meta = dict.fromkeys(TAGS, None)
     for key, value in meta_in.items():
         if key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'):
             meta[key] = value
@@ -113,7 +113,7 @@ def read_image(filepath, slices=None, memmap=False):
             meta[key] = float(value)
         elif key == 'ElementType':
             try:
-                meta[key] = [x[1] for x in MHD_TYPES.items() if x[0] == value.upper()][0]
+                meta[key] = [x[1] for x in TYPES.items() if x[0] == value.upper()][0]
             except IndexError as exception:
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
 
@@ -212,7 +212,7 @@ def write_image(filepath, image=None, **kwargs):
     filepath = pathlib.Path(filepath)
 
     # initialize metadata
-    meta = dict.fromkeys(MHD_TAGS, None)
+    meta = dict.fromkeys(TAGS, None)
     meta['ObjectType'] = 'Image'
     meta['NDims'] = 3
     meta['BinaryData'] = True
@@ -229,7 +229,7 @@ def write_image(filepath, image=None, **kwargs):
     # input metadata (case incensitive)
     for key, value in kwargs.items():
         try:
-            key = MHD_TAGS[[x.upper() for x in MHD_TAGS].index(key.upper())]
+            key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
         except ValueError:
             pass
         else:
@@ -279,7 +279,7 @@ def write_image(filepath, image=None, **kwargs):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
         elif key == 'ElementType':
             try:
-                meta_out[key] = [x[0] for x in MHD_TYPES.items() if np.issubdtype(value, x[1])][0]
+                meta_out[key] = [x[0] for x in TYPES.items() if np.issubdtype(value, x[1])][0]
             except IndexError as exception:
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
         elif key == 'ElementDataFile':
