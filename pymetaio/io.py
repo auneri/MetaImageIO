@@ -230,10 +230,9 @@ def write_image(filepath, image=None, **kwargs):
     for key, value in kwargs.items():
         try:
             key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
-        except ValueError:
-            pass
-        else:
             meta[key] = value
+        except ValueError:
+            raise ValueError(f'Header tag "{key}" is not recognized')
 
     # define ElementDataFile
     if meta['ElementDataFile'] is None:
