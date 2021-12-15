@@ -75,9 +75,9 @@ def read_image(filepath, slices=None, memmap=False):
             # handle case variations
             try:
                 key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
-                meta_in[key] = value
             except ValueError:
                 pass
+            meta_in[key] = value
             # handle supported ElementDataFile formats
             if islist:
                 meta_in['ElementDataFile'].append(line.strip())
@@ -116,6 +116,8 @@ def read_image(filepath, slices=None, memmap=False):
                 meta[key] = [x[1] for x in TYPES.items() if x[0] == value.upper()][0]
             except IndexError as exception:
                 raise ValueError(f'ElementType "{value}" is not supported') from exception
+        else:
+            meta[key] = value
 
     # read image from file
     shape = meta['DimSize'].copy()[::-1]
