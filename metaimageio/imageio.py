@@ -7,7 +7,7 @@ from . import io
 EXTENSIONS = '.mha', '.mhd'
 
 
-class MetaIOFormat(Format):
+class MetaImageIOFormat(Format):
 
     def _can_read(self, request):
         return request.mode[1] in self.modes and request.extension in EXTENSIONS
@@ -28,7 +28,7 @@ class MetaIOFormat(Format):
 
         def _get_data(self, index, **kwargs):
             if index != 0:
-                raise NotImplementedError('pyMetaIO does not support non-zero indices')
+                raise NotImplementedError('MetaImageIO does not support non-zero indices')
             image, meta = io.read_image(self._filepath, **self.request.kwargs)
             if image is None:
                 image = np.array(())
@@ -36,7 +36,7 @@ class MetaIOFormat(Format):
 
         def _get_meta_data(self, index):
             if index != 0:
-                raise NotImplementedError('pyMetaIO does not support non-zero indices')
+                raise NotImplementedError('MetaImageIO does not support non-zero indices')
             _, meta = io.read_image(self._filepath, slices=())
             return meta
 
@@ -54,15 +54,15 @@ class MetaIOFormat(Format):
             io.write_image(self._filepath, image=im, **meta)
 
         def set_meta_data(self, meta):
-            raise NotImplementedError('pyMetaIO does not support writing meta data')
+            raise NotImplementedError('MetaImageIO does not support writing meta data')
 
 
-def imageio(name='PYMETAIO'):
+def imageio(name='MetaImageIO'):
     if name.upper() not in formats.get_format_names():
         names = formats.get_format_names()
-        formats.add_format(MetaIOFormat(
+        formats.add_format(MetaImageIOFormat(
             name,
-            'MetaIO',
+            'MetaImageIO',
             ' '.join(EXTENSIONS),
             'iv'))
         formats.sort(name, *names)

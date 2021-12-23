@@ -1,6 +1,6 @@
 package:
-  name: pymetaio
-  version: "0.1.{{ environ.get('PYMETAIO_COMMIT_COUNT', 0) }}"
+  name: metaimageio
+  version: "0.1.{{ environ.get('METAIMAGEIO_COMMIT_COUNT', 0) }}"
 
 source:
   path: ../
@@ -21,4 +21,4 @@ requirements:
 
 test:
   imports:
-    - pymetaio
+    - metaimageio

@@ -1,6 +1,6 @@
-# pyMetaIO
+# MetaImageIO
 
-Python implementation of the [MetaIO](http://www.itk.org/Wiki/ITK/MetaIO/Documentation) file format.
+Support for reading and writing images in [MetaIO](http://www.itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
 ## Getting started
 
@@ -22,21 +22,20 @@ Use as a plugin to [`imageio`](https://github.com/imageio/imageio) (recommended)
 
 ```python
 import imageio
-import pymetaio
-pymetaio.imageio()
+import metaimageio
+metaimageio.imageio()
 image = imageio.imread('/path/to/image.mha')
 ```
 
 Read images with `.mha` and `.mhd` extension.
 
 ```python
-import pymetaio
-image, meta = pymetaio.read_image('/path/to/image.mha')
+image, meta = metaimageio.read_image('/path/to/image.mha')
 ```
 
 Read images in MATLAB.
 
 ```matlab
-addpath(fileparts(fileparts(py.importlib.find_loader('pymetaio').path.char)));
-[image, meta] = pymetaio.read_image('/path/to/image.mha');
+addpath(fileparts(fileparts(py.importlib.find_loader('metaimageio').path.char)));
+[image, meta] = metaimageio.read_image('/path/to/image.mha');
 ```

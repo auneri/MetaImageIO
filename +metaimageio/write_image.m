@@ -181,7 +181,7 @@ for name = fieldnames(meta)'
                 case 'double'
                     meta_out.(key) = 'MET_DOUBLE';
                 otherwise
-                    error('pymetaio:write_image', 'ElementType "%s" is not supported', meta.(key));
+                    error('metaimageio:write_image', 'ElementType "%s" is not supported', meta.(key));
             end
         case {'ElementDataFile'}
             if iscell(meta.(key))
@@ -194,7 +194,7 @@ for name = fieldnames(meta)'
                 meta_out.(key) = meta.(key);
             end
         otherwise
-            error('pymetaio:write_image', 'Header tag "%s" is not recognized', key);
+            error('metaimageio:write_image', 'Header tag "%s" is not recognized', key);
     end
 end
 

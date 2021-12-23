@@ -6,7 +6,7 @@ function y = py2mat(x)
     elseif isa(x, 'py.dict')
         y = x.struct();
         for fieldname = fieldnames(y)'
-            y.(char(fieldname)) = pymetaio.py.py2mat(y.(char(fieldname)));
+            y.(char(fieldname)) = metaimageio.py.py2mat(y.(char(fieldname)));
         end
     elseif isa(x, 'py.int')
         y = x.double();
@@ -19,7 +19,7 @@ function y = py2mat(x)
     elseif isa(x, 'py.type')
         y = class(x(0).numeric());
     elseif startsWith(class(x), 'py.')
-        warning('pymetaio:py2mat', 'Python type "%s" is not supported', class(x));
+        warning('metaimageio:py2mat', 'Python type "%s" is not supported', class(x));
         y = x;
     else
         y = x;

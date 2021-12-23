@@ -132,7 +132,7 @@ for fieldname = fieldnames(meta_in)'
                 case 'MET_DOUBLE'
                     meta.(key) = 'double';
                 otherwise
-                    error('pymetaio:read_image', 'ElementType "%s" is not supported', meta_in.(key));
+                    error('metaimageio:read_image', 'ElementType "%s" is not supported', meta_in.(key));
             end
         otherwise
             meta.(key) = meta_in.(key);
