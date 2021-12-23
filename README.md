@@ -2,10 +2,14 @@
 
 Support for reading and writing images in [MetaIO](http://www.itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
+[![pypi](https://img.shields.io/pypi/v/metaimageio.svg)](https://pypi.org/project/metaimageio)
+[![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio.svg)](https://anaconda.org/conda-forge/metaimageio)
 [![license](https://img.shields.io/github/license/auneri/metaimageio.svg)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
 [![build](https://img.shields.io/github/workflow/status/auneri/metaimageio/metaimageio)](https://github.com/auneri/metaimageio/actions)
 
 ## Getting started
+
+Install using `pip install metaimageio` or `conda install -c conda-forge metaimageio`.
 
 ### Use in Python
 
