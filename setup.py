@@ -12,16 +12,19 @@ def read(filename):
 
 setuptools.setup(
     name='metaimageio',
-    description=read('README.md').splitlines()[2],
+    description='Support for reading and writing images in MetaIO file format.',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
+    url='https://auneri.github.io/metaimageio',
     author='Ali Uneri',
-    author_email='ali.uneri@jhu.edu',
+    license='MIT',
+    license_files=('LICENSE.md',),
     classifiers=[
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3'],
     packages=setuptools.find_packages(),
     install_requires=[
-        'imageio>=2.9',
-        'numpy>=1.20'],
+        'imageio',
+        'numpy'],
     python_requires='>=3.6')
