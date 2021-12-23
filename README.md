@@ -7,38 +7,34 @@ Support for reading and writing images in [MetaIO](http://www.itk.org/Wiki/ITK/M
 
 ## Getting started
 
-Install via [`conda`](https://docs.conda.io/projects/conda) (recommended)...
+### Use in Python
 
-```shell
-conda install -c http://istar-whitehole/conda pymetaio
+```python
+import metaimageio
+image, meta = metaimageio.read('/path/to/input.mha')
+metaimageio.write('/path/to/output.mha', image, ElementSpacing=meta['ElementSpacing'])
 ```
 
-... or via [`pip`](https://pip.pypa.io).
-
-```shell
-pip install --extra-index-url http://istar-whitehole/pip --trusted-host istar-whitehole pymetaio
-pip install git+https://git.lcsr.jhu.edu/auneri1/pymetaio.git
-pip install /path/to/pymetaio
-```
-
-Use as a plugin to [`imageio`](https://github.com/imageio/imageio) (recommended).
+Add as an [`imageio`](https://github.com/imageio/imageio) plugin.
 
 ```python
 import imageio
-import metaimageio
 metaimageio.imageio()
-image = imageio.imread('/path/to/image.mha')
+image = imageio.imread('/path/to/input.mha')
+meta = image.meta
 ```
 
-Read images with `.mha` and `.mhd` extension.
-
-```python
-image, meta = metaimageio.read_image('/path/to/image.mha')
-```
-
-Read images in MATLAB.
+### Use in MATLAB
 
 ```matlab
-addpath(fileparts(fileparts(py.importlib.find_loader('metaimageio').path.char)));
-[image, meta] = metaimageio.read_image('/path/to/image.mha');
+[image, meta] = metaimageio.read('/path/to/input.mha');
+metaimageio.write('/path/to/output.mha', image, 'ElementSpacing', meta.ElementSpacing);
+```
+
+Add to [image file format registry](https://www.mathworks.com/help/matlab/ref/imformats.html).
+
+```matlab
+metaimageio.imformats();
+image = imread('/path/to/input.mha');
+meta = imfinfo('/path/to/input.mha');
 ```
