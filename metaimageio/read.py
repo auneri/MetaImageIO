@@ -55,7 +55,7 @@ TYPES = {
     'MET_DOUBLE': np.float64}
 
 
-def read_image(filepath, slices=None, memmap=False):
+def read(filepath, slices=None, memmap=False):
     filepath = pathlib.Path(filepath)
 
     # read metadata from file
@@ -208,108 +208,3 @@ def read_image(filepath, slices=None, memmap=False):
         meta['ElementDataFile'] = meta['ElementDataFile'][0]
 
     return image, meta
-
-
-def write_image(filepath, image=None, **kwargs):
-    filepath = pathlib.Path(filepath)
-
-    # initialize metadata
-    meta = dict.fromkeys(TAGS, None)
-    meta['ObjectType'] = 'Image'
-    meta['NDims'] = 3
-    meta['BinaryData'] = True
-    meta['BinaryDataByteOrderMSB'] = False
-    meta['ElementSpacing'] = np.ones(3)
-    meta['DimSize'] = np.zeros(3, dtype=int)
-    meta['ElementType'] = float
-    if image is not None:
-        meta['NDims'] = np.ndim(image)
-        meta['ElementSpacing'] = np.ones(np.ndim(image))
-        meta['DimSize'] = np.array(np.shape(image)[::-1])
-        meta['ElementType'] = np.asarray(image).dtype
-
-    # input metadata (case incensitive)
-    for key, value in kwargs.items():
-        try:
-            key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
-        except ValueError:
-            pass
-        meta[key] = value
-
-    # define ElementDataFile
-    if meta['ElementDataFile'] is None:
-        if filepath.suffix == '.mha':
-            meta['ElementDataFile'] = 'LOCAL'
-        else:
-            meta['ElementDataFile'] = filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw').name
-
-    # prepare image for saving
-    if image is not None:
-        if meta['ElementDataFile'].upper() == 'LOCAL':
-            datapaths = [str(filepath)]
-            mode = 'ab'
-        elif isinstance(meta['ElementDataFile'], (tuple, list)):
-            datapaths = meta['ElementDataFile']
-            mode = 'wb'
-            if np.ndim(image) != 3 or np.shape(image)[2] != len(datapaths):
-                raise ValueError('Number filenames does not match number of slices')
-        else:
-            datapaths = [meta['ElementDataFile']]
-            mode = 'wb'
-        if meta.get('CompressedData'):
-            meta['CompressedDataSize'] = 0
-        datas = []
-        for i, _ in enumerate(datapaths):
-            data = image[i] if len(datapaths) > 1 else image
-            if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
-                data.byteswap(inplace=True)
-            data = data.astype(meta['ElementType']).tobytes()
-            if meta.get('CompressedData'):
-                data = zlib.compress(data, level=2)
-                meta['CompressedDataSize'] += len(data)
-            datas.append(data)
-
-    # typecast metadata to string
-    meta_out = {}
-    for key, value in meta.items():
-        if value is None:
-            continue
-        elif key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality'):
-            meta_out[key] = value
-        elif key in ('NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin', 'ElementMax', 'ElementNumberOfChannels'):
-            meta_out[key] = str(value)
-        elif key in ('Color', 'Position', 'Offset', 'Origin', 'Orientation', 'Rotation', 'TransformMatrix', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'SequenceID', 'ElementSize'):
-            meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
-        elif key == 'ElementType':
-            try:
-                meta_out[key] = [x[0] for x in TYPES.items() if np.issubdtype(value, x[1])][0]
-            except IndexError as exception:
-                raise ValueError(f'ElementType "{value}" is not supported') from exception
-        elif key == 'ElementDataFile':
-            if isinstance(value, (tuple, list)):
-                meta_out[key] = 'LIST'
-                for i in value:
-                    meta_out[key] += f'\n{i}'
-            else:
-                meta_out[key] = value
-        else:
-            pass
-
-    # write metadata to file
-    with filepath.open('w') as f:
-        for key, value in meta_out.items():
-            f.write(f'{key} = {value}\n')
-
-    # write image to file
-    if image is not None:
-        for i, datapath in enumerate(datapaths):
-            datapath = pathlib.Path(datapath)
-            if not datapath.is_absolute():
-                datapath = filepath.parent / datapath
-            with datapath.open(mode) as f:
-                f.write(datas[i])
-
-    # remove unused metadata
-    meta = {x: y for x, y in meta.items() if y is not None}
-
-    return meta

@@ -1,15 +1,14 @@
-function meta = write_image(varargin)
-% WRITE_IMAGE Write MetaImage (.mha, .mhd) files.
+function meta = write(varargin)
+% WRITE Write MetaImage (.mha, .mhd) files.
 %
-%   META = WRITE_IMAGE(FILEPATH, IMAGE) writes input IMAGE array to
-%   FILEPATH of the header file. Image dimensions and element data type are
-%   inferred from the image, and all other tags in the META use default
-%   values.
+%   META = WRITE(FILEPATH, IMAGE) writes input IMAGE array to FILEPATH of
+%   the header file. Image dimensions and element data type are inferred
+%   from the image, and all other tags in the META use default values.
 %
-%   META = WRITE_IMAGE(FILEPATH, IMAGE, META) optionally input a META
-%   struct which can contain some or all of the header information.
+%   META = WRITE(FILEPATH, IMAGE, META) optionally input a META struct
+%   which can contain some or all of the header information.
 %
-%   META = WRITE_IMAGE(FILEPATH) writes a header file with default tags,
+%   META = WRITE(FILEPATH) writes a header file with default tags,
 %   generated META struct is returned.
 %
 % Please refer to http://www.itk.org/Wiki/ITK/MetaIO/Documentation for
@@ -181,7 +180,7 @@ for name = fieldnames(meta)'
                 case 'double'
                     meta_out.(key) = 'MET_DOUBLE';
                 otherwise
-                    error('metaimageio:write_image', 'ElementType "%s" is not supported', meta.(key));
+                    error('metaimageio:write', 'ElementType "%s" is not supported', meta.(key));
             end
         case {'ElementDataFile'}
             if iscell(meta.(key))
@@ -194,7 +193,7 @@ for name = fieldnames(meta)'
                 meta_out.(key) = meta.(key);
             end
         otherwise
-            error('metaimageio:write_image', 'Header tag "%s" is not recognized', key);
+            error('metaimageio:write', 'Header tag "%s" is not recognized', key);
     end
 end
 

@@ -1,7 +1,7 @@
-function [image, meta] = read_image(varargin)
-% READ_IMAGE Read MetaImage (.mha, .mhd) files.
+function [image, meta] = read(varargin)
+% READ Read MetaImage (.mha, .mhd) files.
 %
-%   [IMAGE, META] = READ_IMAGE(FILEPATH) reads IMAGE and META.
+%   [IMAGE, META] = READ(FILEPATH) reads IMAGE and META.
 %
 % Please refer to http://www.itk.org/Wiki/ITK/MetaIO/Documentation for
 % further details on the image file format.
@@ -132,7 +132,7 @@ for fieldname = fieldnames(meta_in)'
                 case 'MET_DOUBLE'
                     meta.(key) = 'double';
                 otherwise
-                    error('metaimageio:read_image', 'ElementType "%s" is not supported', meta_in.(key));
+                    error('metaimageio:read', 'ElementType "%s" is not supported', meta_in.(key));
             end
         otherwise
             meta.(key) = meta_in.(key);

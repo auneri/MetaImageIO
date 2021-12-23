@@ -2,7 +2,7 @@ import numpy as np
 from imageio import formats
 from imageio.core import Format
 
-from . import io
+from . import read, write
 
 EXTENSIONS = '.mha', '.mhd'
 
@@ -29,7 +29,7 @@ class MetaImageIOFormat(Format):
         def _get_data(self, index, **kwargs):
             if index != 0:
                 raise NotImplementedError('MetaImageIO does not support non-zero indices')
-            image, meta = io.read_image(self._filepath, **self.request.kwargs)
+            image, meta = read.read(self._filepath, **self.request.kwargs)
             if image is None:
                 image = np.array(())
             return image, meta
@@ -37,7 +37,7 @@ class MetaImageIOFormat(Format):
         def _get_meta_data(self, index):
             if index != 0:
                 raise NotImplementedError('MetaImageIO does not support non-zero indices')
-            _, meta = io.read_image(self._filepath, slices=())
+            _, meta = read.read(self._filepath, slices=())
             return meta
 
     class Writer(Format.Writer):
@@ -51,7 +51,7 @@ class MetaImageIOFormat(Format):
         def _append_data(self, im, meta):
             meta.pop('ElementDataFile', None)
             meta.update(self.request.kwargs)
-            io.write_image(self._filepath, image=im, **meta)
+            write.write(self._filepath, image=im, **meta)
 
         def set_meta_data(self, meta):
             raise NotImplementedError('MetaImageIO does not support writing meta data')

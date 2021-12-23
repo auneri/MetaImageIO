@@ -28,8 +28,8 @@ def file_with_suffix(suffix):
 def test_compression(dtype):
     with file_with_suffix('.mhd') as f:
         a = (100 * np.random.random_sample((2, 3, 4))).astype(dtype)
-        metaimageio.write_image(f, a, CompressedData=True)
-        b, _ = metaimageio.read_image(f)
+        metaimageio.write(f, a, CompressedData=True)
+        b, _ = metaimageio.read(f)
         np.testing.assert_almost_equal(b, a)
 
 
@@ -38,8 +38,8 @@ def test_compression(dtype):
 def test_io(suffix, dtype):
     with file_with_suffix(suffix) as f:
         a = (100 * np.random.random_sample((2, 3, 4))).astype(dtype)
-        metaimageio.write_image(f, a)
-        b, _ = metaimageio.read_image(f)
+        metaimageio.write(f, a)
+        b, _ = metaimageio.read(f)
         np.testing.assert_almost_equal(b, a)
 
 
@@ -47,8 +47,8 @@ def test_io(suffix, dtype):
 def test_memmap(dtype):
     with file_with_suffix('.mhd') as f:
         a = (100 * np.random.random_sample((2, 3, 4))).astype(dtype)
-        metaimageio.write_image(f, a)
-        b, _ = metaimageio.read_image(f, memmap=True)
+        metaimageio.write(f, a)
+        b, _ = metaimageio.read(f, memmap=True)
         np.testing.assert_almost_equal(b, a)
         del b
 
@@ -56,6 +56,6 @@ def test_memmap(dtype):
 def test_meta():
     with file_with_suffix('.mhd') as f:
         a = np.random.random_sample((2, 3, 4))
-        metaimageio.write_image(f, a)
-        b, _ = metaimageio.read_image(f, slices=())
+        metaimageio.write(f, a)
+        b, _ = metaimageio.read(f, slices=())
         assert b is None
