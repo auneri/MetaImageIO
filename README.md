@@ -23,7 +23,7 @@ Use as a plugin to [`imageio`](https://github.com/imageio/imageio) (recommended)
 ```python
 import imageio
 import pymetaio
-pymetaio.imageio.plugin()
+pymetaio.imageio()
 image = imageio.imread('/path/to/image.mha')
 ```
 

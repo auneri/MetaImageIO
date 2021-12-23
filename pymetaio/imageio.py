@@ -57,7 +57,7 @@ class MetaIOFormat(Format):
             raise NotImplementedError('pyMetaIO does not support writing meta data')
 
 
-def plugin(name='PYMETAIO'):
+def imageio(name='PYMETAIO'):
     if name.upper() not in formats.get_format_names():
         names = formats.get_format_names()
         formats.add_format(MetaIOFormat(
