@@ -28,7 +28,6 @@ pip:
   before_script:
     - conda create --yes --prefix .\environment
     - conda env update --prefix .\environment
-    - $Env:METAIMAGEIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: conda run --prefix .\environment --no-capture-output python setup.py sdist bdist_wheel
   after_script:
     - New-Item -Path "C:\istar\server\pip\metaimageio" -ItemType Directory -Force
@@ -42,8 +41,6 @@ conda:
   only:
     refs:
       - main
-  before_script:
-    - $Env:METAIMAGEIO_COMMIT_COUNT = (git rev-list --count HEAD)
   script: conda build --channel conda-forge --output-folder .\conda-build .\conda
   after_script:
     - Copy-Item -Path ".\conda-build\noarch\*.tar.bz2" -Destination "C:\istar\server\conda\noarch" -Recurse
