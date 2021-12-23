@@ -2,6 +2,9 @@
 
 Support for reading and writing images in [MetaIO](http://www.itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
+[![license](https://img.shields.io/github/license/auneri/metaimageio.svg)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
+[![build](https://img.shields.io/github/workflow/status/auneri/metaimageio/metaimageio)](https://github.com/auneri/metaimageio/actions)
+
 ## Getting started
 
 Install via [`conda`](https://docs.conda.io/projects/conda) (recommended)...
