@@ -2,17 +2,15 @@
 
 Support for reading and writing images in [MetaIO](https://itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
-[![pypi](https://img.shields.io/pypi/v/metaimageio.svg)](https://pypi.org/project/metaimageio)
-[![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio.svg)](https://anaconda.org/conda-forge/metaimageio)
-[![license](https://img.shields.io/github/license/auneri/metaimageio.svg)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
-[![build](https://img.shields.io/github/workflow/status/auneri/metaimageio/metaimageio)](https://github.com/auneri/metaimageio/actions)
+[![license](https://img.shields.io/github/license/auneri/MetaImageIO)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
+[![build](https://img.shields.io/github/workflow/status/auneri/MetaImageIO/metaimageio)](https://github.com/auneri/metaimageio/actions)
+[![pypi](https://img.shields.io/pypi/v/metaimageio)](https://pypi.org/project/metaimageio)
+[![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio)](https://anaconda.org/conda-forge/metaimageio)
 [![matlab-file-exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/104070-metaimageio)
 
-## Getting started
+## Getting started in Python
 
 Install using `pip install metaimageio` or `conda install -c conda-forge metaimageio`.
-
-### Use in Python
 
 ```python
 import metaimageio
@@ -29,7 +27,7 @@ image = imageio.imread('/path/to/input.mha')
 meta = image.meta
 ```
 
-### Use in MATLAB
+## Getting started in MATLAB
 
 Install using the [Add-On Manager](https://www.mathworks.com/help/matlab/matlab_env/get-add-ons.html).
 
