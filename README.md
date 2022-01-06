@@ -6,6 +6,7 @@ Support for reading and writing images in [MetaIO](https://itk.org/Wiki/ITK/Meta
 [![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio.svg)](https://anaconda.org/conda-forge/metaimageio)
 [![license](https://img.shields.io/github/license/auneri/metaimageio.svg)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
 [![build](https://img.shields.io/github/workflow/status/auneri/metaimageio/metaimageio)](https://github.com/auneri/metaimageio/actions)
+[![matlab-file-exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/104070-metaimageio)
 
 ## Getting started
 
@@ -29,6 +30,8 @@ meta = image.meta
 ```
 
 ### Use in MATLAB
+
+Install using the [Add-On Manager](https://www.mathworks.com/help/matlab/matlab_env/get-add-ons.html).
 
 ```matlab
 [image, meta] = metaimageio.read('/path/to/input.mha');
