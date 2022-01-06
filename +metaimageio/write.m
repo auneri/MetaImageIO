@@ -11,7 +11,7 @@ function meta = write(varargin)
 %   META = WRITE(FILEPATH) writes a header file with default tags,
 %   generated META struct is returned.
 %
-% Please refer to http://www.itk.org/Wiki/ITK/MetaIO/Documentation for
+% Please refer to https://itk.org/Wiki/ITK/MetaIO/Documentation for
 % further details on the image file format.
 
 % https://itk.org/Wiki/ITK/MetaIO/Documentation#Reference:_Tags_of_MetaImage

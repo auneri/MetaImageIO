@@ -1,6 +1,6 @@
 # MetaImageIO
 
-Support for reading and writing images in [MetaIO](http://www.itk.org/Wiki/ITK/MetaIO/Documentation) file format.
+Support for reading and writing images in [MetaIO](https://itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
 [![pypi](https://img.shields.io/pypi/v/metaimageio.svg)](https://pypi.org/project/metaimageio)
 [![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio.svg)](https://anaconda.org/conda-forge/metaimageio)
