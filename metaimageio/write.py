@@ -67,6 +67,7 @@ def write(filepath, image=None, **kwargs):
     meta['DimSize'] = np.zeros(3, dtype=int)
     meta['ElementType'] = float
     if image is not None:
+        image = np.asarray(image)
         meta['NDims'] = np.ndim(image)
         meta['ElementSpacing'] = np.ones(np.ndim(image))
         meta['DimSize'] = np.array(np.shape(image)[::-1])
