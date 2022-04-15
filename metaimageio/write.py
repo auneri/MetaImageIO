@@ -140,7 +140,7 @@ def write(filepath, image=None, **kwargs):
             else:
                 meta_out[key] = value
         else:
-            pass
+            meta_out[key] = value
 
     # write metadata to file
     with filepath.open('w') as f:
