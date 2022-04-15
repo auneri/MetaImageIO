@@ -79,7 +79,8 @@ def write(filepath, image=None, **kwargs):
             key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
         except ValueError:
             pass
-        meta[key] = value
+        if key != 'ElementDataFile':
+            meta[key] = value
 
     # define ElementDataFile
     if meta['ElementDataFile'] is None:
