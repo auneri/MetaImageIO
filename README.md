@@ -18,7 +18,7 @@ image, meta = metaimageio.read('/path/to/input.mha')
 metaimageio.write('/path/to/output.mha', image, ElementSpacing=meta['ElementSpacing'])
 ```
 
-Add to [imageio](https://github.com/imageio/imageio) plugins.
+Add to [imageio](https://imageio.readthedocs.io) plugins.
 
 ```python
 import imageio
