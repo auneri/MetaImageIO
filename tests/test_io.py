@@ -12,9 +12,8 @@ SUFFIX = '.mha', '.mhd'
 
 @contextlib.contextmanager
 def file_with_suffix(suffix):
-    tf = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
-    tf.close()
-    filepath = pathlib.Path(tf.name)
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as f:
+        filepath = pathlib.Path(f.name)
     try:
         yield filepath
     finally:
