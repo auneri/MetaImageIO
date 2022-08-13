@@ -90,6 +90,11 @@ def write(filepath, image=None, **kwargs):
         else:
             meta['ElementDataFile'] = filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw').name
 
+    # handle ElementNumberOfChannels
+    if meta['ElementNumberOfChannels'] is not None and meta['ElementNumberOfChannels'] > 1:
+        meta['DimSize'] = meta['DimSize'][:-1]
+        meta['NDims'] -= 1
+
     # prepare image for saving
     if image is not None:
         if meta['ElementDataFile'].upper() == 'LOCAL':
