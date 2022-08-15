@@ -1,22 +1,21 @@
 channels:
   - conda-forge
-  - defaults
 dependencies:
-  - imageio>=2.8
-  - numpy>=1.19
-  - python>=3.6
+  - conda-forge::imageio>=2.8
+  - conda-forge::numpy>=1.19
+  - conda-forge::python>=3.6
   # test
-  - flake8<5
-  - flake8-builtins
-  - flake8-comprehensions
-  - flake8-import-order
-  - flake8-mutable
-  - flake8-quotes
-  - pep8-naming
-  - pytest
-  - pytest-cov
-  - pytest-flake8
+  - conda-forge::flake8<5
+  - conda-forge::flake8-builtins
+  - conda-forge::flake8-comprehensions
+  - conda-forge::flake8-import-order
+  - conda-forge::flake8-mutable
+  - conda-forge::flake8-quotes
+  - conda-forge::pep8-naming
+  - conda-forge::pytest
+  - conda-forge::pytest-cov
+  - conda-forge::pytest-flake8
   # pip
-  - pip
+  - conda-forge::pip
   - pip:
     - --editable .
