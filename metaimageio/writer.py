@@ -79,11 +79,9 @@ def write(filepath, image=None, **kwargs):
             key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
         except ValueError:
             pass
-        if key != 'ElementDataFile':
-            meta[key] = value
+        meta[key] = value
 
     # define ElementDataFile
-    meta['ElementDataFile'] = meta.pop('ElementDataFile')
     if meta['ElementDataFile'] is None:
         if filepath.suffix == '.mha':
             meta['ElementDataFile'] = 'LOCAL'
