@@ -205,7 +205,5 @@ def read(filepath, slices=None, memmap=False):
     # remove unused metadata
     meta['ElementDataFile'] = None
     meta = {x: y for x, y in meta.items() if y is not None}
-    if isinstance(meta['ElementDataFile'], (tuple, list)):
-        meta['ElementDataFile'] = meta['ElementDataFile'][0]
 
     return image, meta
