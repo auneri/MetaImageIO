@@ -128,8 +128,10 @@ def write(filepath, image=None, **kwargs):
             meta_out[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin', 'ElementMax', 'ElementNumberOfChannels'):
             meta_out[key] = str(value)
-        elif key in ('Color', 'Position', 'Offset', 'Origin', 'Orientation', 'Rotation', 'TransformMatrix', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'SequenceID', 'ElementSize'):
+        elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'SequenceID', 'ElementSize'):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
+        elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
+            meta_out[key] = ' '.join(str(x) for x in np.ravel(np.transpose(value)))
         elif key == 'ElementType':
             try:
                 meta_out[key] = [x[0] for x in TYPES.items() if np.issubdtype(value, x[1])][0]

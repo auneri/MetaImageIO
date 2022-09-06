@@ -106,7 +106,7 @@ def read(filepath, slices=None, memmap=False):
         elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize'):
             meta[key] = np.array(value.split(), dtype=float)
         elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
-            meta[key] = np.array(value.split(), dtype=float).reshape(3, 3)
+            meta[key] = np.array(value.split(), dtype=float).reshape(3, 3).transpose()
         elif key in ('DimSize', 'SequenceID'):
             meta[key] = np.array(value.split(), dtype=int)
         elif key in ('ElementMin', 'ElementMax'):
