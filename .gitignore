@@ -1,12 +1,4 @@
-__pycache__/
-*.py[cod]
-*$py.class
-
-build/
-dist/
-*.egg-info/
-
-.coverage
-.vscode
-
+*.coverage
 *.DS_Store
+*.egg-info/
+*.pyc
