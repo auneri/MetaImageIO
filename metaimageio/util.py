@@ -2,7 +2,7 @@ import numpy as np
 
 
 def get_transform(meta):
-    translation = np.eye(4, 4)
+    translation = np.eye(4)
     if int('Position' in meta) + int('Offset' in meta) + int('Origin' in meta) > 1:
         raise ValueError('Ambigious definition of position')
     if 'Position' in meta:
@@ -11,7 +11,7 @@ def get_transform(meta):
         translation[:3,3] = meta['Offset']
     elif 'Origin' in meta:
         translation[:3,3] = meta['Origin']
-    rotation = np.eye(4, 4)
+    rotation = np.eye(4)
     if int('Orientation' in meta) + int('Rotation' in meta) + int('TransformMatrix' in meta) > 1:
         raise ValueError('Ambigious definition of orientation')
     if 'Orientation' in meta:
@@ -20,7 +20,7 @@ def get_transform(meta):
         rotation[:3,:3] = meta['Rotation']
     elif 'TransformMatrix' in meta:
         rotation[:3,:3] = meta['TransformMatrix']
-    center_of_rotation = np.eye(4, 4)
+    center_of_rotation = np.eye(4)
     if 'CenterOfRotation' in meta:
         center_of_rotation[:3,3] = meta['CenterOfRotation']
     return translation.dot(center_of_rotation).dot(rotation).dot(np.linalg.inv(center_of_rotation))
