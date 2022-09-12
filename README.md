@@ -3,7 +3,7 @@
 Support for reading and writing images in [MetaIO](https://itk.org/Wiki/ITK/MetaIO/Documentation) file format.
 
 [![license](https://img.shields.io/github/license/auneri/MetaImageIO)](https://github.com/auneri/metaimageio/blob/main/LICENSE.md)
-[![build](https://img.shields.io/github/workflow/status/auneri/MetaImageIO/metaimageio)](https://github.com/auneri/metaimageio/actions)
+[![build](https://img.shields.io/github/workflow/status/auneri/MetaImageIO/CI)](https://github.com/auneri/metaimageio/actions)
 [![pypi](https://img.shields.io/pypi/v/metaimageio)](https://pypi.org/project/metaimageio)
 [![conda-forge](https://img.shields.io/conda/vn/conda-forge/metaimageio)](https://anaconda.org/conda-forge/metaimageio)
 [![matlab-file-exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/104070-metaimageio)
