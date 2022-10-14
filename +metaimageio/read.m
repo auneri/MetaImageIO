@@ -75,7 +75,7 @@ while ~feof(fid)
         try
             meta_in.(key) = value;
         catch exception
-            if ~strcmp(exception.identifier,'MATLAB:AddField:InvalidFieldName')
+            if ~strcmp(exception.identifier, 'MATLAB:AddField:InvalidFieldName')
                 rethrow(exception);
             end
          end 
