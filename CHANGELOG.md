@@ -5,9 +5,15 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.0...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.1...main) for detailed changes.
 
-## 1.1.0 -- 2022-09-206
+## 1.1.1 -- 2022-10-28
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.0...v1.1.1) for detailed changes.
+
+* Skip unsupported field names when reading in MATLAB
+
+## 1.1.0 -- 2022-09-06
 
 See [individual commits](https://github.com/auneri/metaimageio/compare/v1.0.0...v1.1.0) for detailed changes.
 
