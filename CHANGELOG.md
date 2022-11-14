@@ -5,7 +5,11 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.1...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.2...main) for detailed changes.
+
+## 1.1.2 -- 2022-11-14
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.1...v1.1.2) for detailed changes.
 
 ## 1.1.1 -- 2022-10-28
 
