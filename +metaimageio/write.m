@@ -86,6 +86,9 @@ for fieldname = fieldnames(meta_in)'
 end
 
 % define ElementDataFile
+element_data_file = meta.ElementDataFile;
+meta = rmfield(meta, 'ElementDataFile');
+meta.ElementDataFile = element_data_file;  % ensure ElementDataFile is the last tag
 if ismissing(meta.ElementDataFile)
     [~, name, ext] = fileparts(filepath);
     if strcmpi(ext, '.mha')

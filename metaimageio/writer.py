@@ -82,6 +82,7 @@ def write(filepath, image=None, **kwargs):
         meta[key] = value
 
     # define ElementDataFile
+    meta['ElementDataFile'] = meta.pop('ElementDataFile')  # ensure ElementDataFile is the last tag
     if meta['ElementDataFile'] is None:
         if filepath.suffix == '.mha':
             meta['ElementDataFile'] = 'LOCAL'
