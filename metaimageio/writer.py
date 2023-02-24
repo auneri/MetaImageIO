@@ -157,7 +157,7 @@ def write(filepath, image=None, **kwargs):
     if image is not None:
         for i, datapath in enumerate(datapaths):
             datapath = pathlib.Path(datapath)
-            if not datapath.is_absolute():
+            if filepath != datapath and not datapath.is_absolute():
                 datapath = filepath.parent / datapath
             with datapath.open(mode) as f:
                 f.write(datas[i])

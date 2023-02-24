@@ -136,7 +136,7 @@ def read(filepath, slices=None, memmap=False):
         if slices is not None:
             raise ValueError('Specifying slices is not supported with memmap')
         datapath = pathlib.Path(meta['ElementDataFile'][0])
-        if not datapath.is_absolute():
+        if filepath != datapath and not datapath.is_absolute():
             datapath = filepath.parent / datapath
         offset = 0
         if islocal:
@@ -158,7 +158,7 @@ def read(filepath, slices=None, memmap=False):
 
         for i, datapath in enumerate(meta['ElementDataFile']):
             datapath = pathlib.Path(datapath)
-            if not datapath.is_absolute():
+            if filepath != datapath and not datapath.is_absolute():
                 datapath = filepath.parent / datapath
             with datapath.open('rb') as f:
                 if islocal:
