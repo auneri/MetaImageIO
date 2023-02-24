@@ -5,7 +5,13 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.2...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.3...main) for detailed changes.
+
+## 1.1.3 -- 2023-02-23
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.2...v1.1.3) for detailed changes.
+
+* Fix use of relative paths with .mha files
 
 ## 1.1.2 -- 2022-11-14
 
