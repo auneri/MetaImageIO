@@ -1,7 +1,7 @@
 channels:
   - conda-forge
 dependencies:
-  - conda-forge::imageio>=2.16
+  - conda-forge::imageio>=2.8
   - conda-forge::numpy>=1.19
   - conda-forge::python>=3.6
   # test

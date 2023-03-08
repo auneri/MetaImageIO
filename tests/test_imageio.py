@@ -1,4 +1,4 @@
-import imageio.v2 as imageio
+import imageio
 import metaimageio
 import numpy as np
 import pytest
