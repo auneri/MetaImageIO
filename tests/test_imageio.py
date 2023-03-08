@@ -1,8 +1,11 @@
-import imageio
 import metaimageio
 import numpy as np
 import pytest
 from test_io import file_with_suffix, SUFFIX
+try:
+    import imageio.v2 as imageio
+except ImportError:
+    import imageio
 
 
 @pytest.mark.parametrize('suffix', SUFFIX)
