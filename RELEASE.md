@@ -8,8 +8,12 @@
 2. Upload new package to PyPI
 
     ```bash
-    conda activate base
+    conda create --yes --prefix dist python=3.9
+    conda activate dist
+    git clone --depth 1 --branch vX.X.X https://github.com/auneri/metaimageio src
+    cd src
     python setup.py sdist bdist_wheel
+    conda activate base
     twine upload dist/*
     ```
 
