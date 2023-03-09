@@ -5,13 +5,20 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.3...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.4...main) for detailed changes.
+
+## 1.1.4 -- 2023-03-09
+
+* Fix broken package.
+* Reduce minimum required imageio version.
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.3...v1.1.4) for detailed changes.
 
 ## 1.1.3 -- 2023-02-23
 
 See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.2...v1.1.3) for detailed changes.
 
-* Fix use of relative paths with .mha files
+* Fix use of relative paths with .mha files.
 
 ## 1.1.2 -- 2022-11-14
 
@@ -21,7 +28,7 @@ See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.1...
 
 See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.0...v1.1.1) for detailed changes.
 
-* Skip unsupported field names when reading in MATLAB
+* Skip unsupported field names when reading in MATLAB.
 
 ## 1.1.0 -- 2022-09-06
 
