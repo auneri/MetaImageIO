@@ -86,8 +86,10 @@ def write(filepath, image=None, **kwargs):
     if meta['ElementDataFile'] is None:
         if filepath.suffix == '.mha':
             meta['ElementDataFile'] = 'LOCAL'
+        elif meta.get('CompressedData'):
+            meta['ElementDataFile'] = filepath.with_suffix('.zraw').name
         else:
-            meta['ElementDataFile'] = filepath.with_suffix('.zraw' if meta.get('CompressedData') else '.raw').name
+            meta['ElementDataFile'] = filepath.with_suffix('.raw').name
 
     # handle ElementNumberOfChannels
     if meta['ElementNumberOfChannels'] is not None and meta['ElementNumberOfChannels'] > 1:
