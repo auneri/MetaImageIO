@@ -93,7 +93,7 @@ def write(filepath, image=None, **kwargs):
 
     # handle ElementNumberOfChannels
     if meta['ElementNumberOfChannels'] is not None and meta['ElementNumberOfChannels'] > 1:
-        meta['DimSize'] = meta['DimSize'][:-1]
+        meta['DimSize'] = meta['DimSize'][1:]
         meta['NDims'] -= 1
 
     # prepare image for saving
