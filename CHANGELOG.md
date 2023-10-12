@@ -5,7 +5,13 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.4...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.5...main) for detailed changes.
+
+## 1.1.5 -- 2023-10-12
+
+* Fix writing when ElementNumberOfChannels > 1.
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.4...v1.1.5) for detailed changes.
 
 ## 1.1.4 -- 2023-03-09
 
