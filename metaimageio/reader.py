@@ -34,6 +34,7 @@ TAGS = (
     'DimSize',                  # MET_INT_ARRAY[NDims]
     'HeaderSize',               # MET_INT
     'HeaderSizePerSlice',       # MET_INT (non-standard tag for handling per slice header)
+    'HeaderSizesPerDataFile',   # MET_INT_ARRAY[NDataFile] (non-standard tag for handling variable per ElementDataFile header)
     'Modality',                 # MET_STRING (MET_MOD_CT)
     'SequenceID',               # MET_INT_ARRAY[4]
     'ElementMin',               # MET_FLOAT
@@ -108,7 +109,7 @@ def read(filepath, slices=None, memmap=False):
             meta[key] = np.array(value.split(), dtype=float)
         elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
             meta[key] = np.array(value.split(), dtype=float).reshape(3, 3).transpose()
-        elif key in ('DimSize', 'SequenceID'):
+        elif key in ('DimSize', 'HeaderSizesPerDataFile', 'SequenceID'):
             meta[key] = np.array(value.split(), dtype=int)
         elif key in ('ElementMin', 'ElementMax'):
             meta[key] = float(value)
@@ -132,6 +133,8 @@ def read(filepath, slices=None, memmap=False):
             raise ValueError('CompressedData is not supported with memmap')
         if meta['HeaderSizePerSlice'] is not None:
             raise ValueError('HeaderSizePerSlice is not supported with memmap')
+        if meta['HeaderSizesPerDataFile'] is not None:
+            raise ValueError('HeaderSizesPerDataFile is not supported with memmap')
         if len(meta['ElementDataFile']) != 1:
             raise ValueError('Only single ElementDataFile is supported with memmap')
         if slices is not None:
@@ -165,6 +168,8 @@ def read(filepath, slices=None, memmap=False):
                 if islocal:
                     f.seek(meta_size, 1)
                 f.seek((meta.get('HeaderSize') or 0), 1)
+                if meta['HeaderSizesPerDataFile'] is not None:
+                    f.seek(meta['HeaderSizesPerDataFile'][i], 1)
                 if meta.get('CompressedData'):
                     if meta['CompressedDataSize'] is None:
                         raise ValueError('CompressedDataSize needs to be specified when using CompressedData')

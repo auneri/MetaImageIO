@@ -32,6 +32,7 @@ TAGS = (
     'DimSize',                  # MET_INT_ARRAY[NDims]
     'HeaderSize',               # MET_INT
     'HeaderSizePerSlice',       # MET_INT (non-standard tag for handling per slice header)
+    'HeaderSizesPerDataFile',   # MET_INT_ARRAY[NDataFile] (non-standard tag for handling variable per ElementDataFile header)
     'Modality',                 # MET_STRING (MET_MOD_CT)
     'SequenceID',               # MET_INT_ARRAY[4]
     'ElementMin',               # MET_FLOAT
@@ -131,7 +132,7 @@ def write(filepath, image=None, **kwargs):
             meta_out[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin', 'ElementMax', 'ElementNumberOfChannels'):
             meta_out[key] = str(value)
-        elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'SequenceID', 'ElementSize'):
+        elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'HeaderSizesPerDataFile', 'SequenceID', 'ElementSize'):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
         elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(np.transpose(value)))
