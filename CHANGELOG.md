@@ -10,7 +10,6 @@ See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.0...
 ## 1.2.0 -- 2023-10-19
 
 * New non-standard tag, HeaderSizesPerDataFile.
-* Limit reading to image size.
 * Support spaces in ElementDataFile.
 
 See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.5...v1.2.0) for detailed changes.
