@@ -1,5 +1,6 @@
 import io
 import pathlib
+import shlex
 import zlib
 
 import numpy as np
@@ -89,7 +90,7 @@ def read(filepath, slices=None, memmap=False):
                 islocal = True
                 break
             elif key == 'ElementDataFile' and '%' in value:
-                args = value.split()
+                args = shlex.split(value)
                 meta_in['ElementDataFile'] = [args[0] % i for i in range(int(args[1]), int(args[2]) + int(args[3]), int(args[3]))]
             elif key == 'ElementDataFile':
                 meta_in['ElementDataFile'] = [value]
