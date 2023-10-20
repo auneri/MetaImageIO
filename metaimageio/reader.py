@@ -202,7 +202,7 @@ def read(filepath, slices=None, memmap=False):
                     data.write(f.read(read))
         if slices:
             shape[0] = len(slices)
-            image = np.frombuffer(data.getbuffer()[:int(np.prod(shape)) * np.dtype(meta['ElementType']).itemsize], dtype=meta['ElementType']).reshape(shape)
+            image = np.frombuffer(data.getbuffer(), dtype=meta['ElementType']).reshape(shape)
             if meta.get('BinaryDataByteOrderMSB') or meta.get('ElementByteOrderMSB'):
                 image.byteswap(inplace=True)
         else:
