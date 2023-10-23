@@ -42,6 +42,7 @@ TAGS = { ...
     'DimSize', ...                  % MET_INT_ARRAY[NDims]
     'HeaderSize', ...               % MET_INT
     'HeaderSizePerSlice', ...       % MET_INT (non-standard tag for handling per slice header)
+    'HeaderSizesPerDataFile', ...   % MET_INT_ARRAY[NDataFile] (non-standard tag for handling variable per ElementDataFile header)
     'Modality', ...                 % MET_STRING (MET_MOD_CT)
     'SequenceID', ...               % MET_INT_ARRAY[4]
     'ElementMin', ...               % MET_FLOAT
@@ -158,7 +159,7 @@ for name = fieldnames(meta)'
             meta_out.(key) = strtrim(sprintf('%g ', meta.(key)));
         case {'Orientation', 'Rotation', 'TransformMatrix'}
             meta_out.(key) = strtrim(sprintf('%g ', meta.(key)(:)));
-        case {'DimSize', 'SequenceID'}
+        case {'DimSize', 'HeaderSizesPerDataFile', 'SequenceID'}
             meta_out.(key) = strtrim(sprintf('%i ', meta.(key)));
         case {'ElementMin', 'ElementMax'}
             meta_out.(key) = sprintf('%g', meta.(key));

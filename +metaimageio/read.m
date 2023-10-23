@@ -34,6 +34,7 @@ TAGS = { ...
     'DimSize', ...                  % MET_INT_ARRAY[NDims]
     'HeaderSize', ...               % MET_INT
     'HeaderSizePerSlice', ...       % MET_INT (non-standard tag for handling per slice header)
+    'HeaderSizesPerDataFile', ...   % MET_INT_ARRAY[NDataFile] (non-standard tag for handling variable per ElementDataFile header)
     'Modality', ...                 % MET_STRING (MET_MOD_CT)
     'SequenceID', ...               % MET_INT_ARRAY[4]
     'ElementMin', ...               % MET_FLOAT
@@ -111,7 +112,7 @@ for fieldname = fieldnames(meta_in)'
             meta.(key) = str2double(meta_in.(key));
         case {'CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'}
             meta.(key) = strcmpi(meta_in.(key), 'true');
-        case {'Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize', 'DimSize', 'SequenceID'}
+        case {'Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize', 'DimSize', 'HeaderSizesPerDataFile', 'SequenceID'}
             meta.(key) = str2num(meta_in.(key)); %#ok<ST2NM>
         case {'Orientation', 'Rotation', 'TransformMatrix'}
             meta.(key) = reshape(str2num(meta_in.(key)), str2double(meta_in.NDims), str2double(meta_in.NDims)); %#ok<ST2NM>
@@ -180,6 +181,9 @@ if ~isempty(slices)
         end
         if ~ismissing(meta.HeaderSize)
             fseek(fid, meta.HeaderSize, 'cof');
+        end
+        if ~ismissing(meta.HeaderSizesPerDataFile)
+            fseek(fid, meta.HeaderSizesPerDataFile(i), 'cof');
         end
         if ~ismissing(meta.CompressedData) && meta.CompressedData
             assert(~ismissing(meta.CompressedDataSize), 'CompressedDataSize needs to be specified when using CompressedData');
