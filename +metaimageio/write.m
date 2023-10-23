@@ -93,12 +93,10 @@ if ismissing(meta.ElementDataFile)
     [~, name, ext] = fileparts(filepath);
     if strcmpi(ext, '.mha')
         meta.ElementDataFile = 'LOCAL';
+    elseif ~ismissing(meta.CompressedData) && meta.CompressedData
+        meta.ElementDataFile = sprintf('%s.zraw', name);
     else
-        extension = '.raw';
-        if ~ismissing(meta.CompressedData) && meta.CompressedData
-            extension = '.zraw';
-        end
-        meta.ElementDataFile = sprintf('%s%s', name, extension);
+        meta.ElementDataFile = sprintf('%s.raw', name);
     end
 end
 
