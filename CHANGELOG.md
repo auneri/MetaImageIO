@@ -5,7 +5,15 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.0...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.1...main) for detailed changes.
+
+## 1.2.1 -- 2023-10-23
+
+* Implement latest changes and fixes in MATLAB
+* Check for invalid ElementDataFile input for .mha files
+* Extended testing
+
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.0...v1.2.1) for detailed changes.
 
 ## 1.2.0 -- 2023-10-19
 
