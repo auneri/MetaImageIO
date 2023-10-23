@@ -101,11 +101,16 @@ if ismissing(meta.ElementDataFile)
     end
 end
 
+% handle ElementNumberOfChannels
+islices = meta.NDims;
+if ~ismissing(meta.ElementNumberOfChannels) && meta.ElementNumberOfChannels > 1
+    meta.DimSize = meta.DimSize(2:end);
+    meta.NDims = meta.NDims - 1;
+    islices = islices + 1;
+end
+
 % prepare image for saving
 if ~isempty(image)
-    if ~ismissing(meta.ElementNumberOfChannels) && meta.ElementNumberOfChannels > 1
-        image = permute(image, [meta.NDims+1, 1:meta.NDims]);
-    end
     if strcmpi(meta.ElementDataFile, 'LOCAL')
         datapaths = {filepath};
         mode = 'a';
@@ -123,7 +128,9 @@ if ~isempty(image)
     datas = cell(numel(datapaths),1);
     for i = 1:numel(datapaths)
         if numel(datapaths) > 1
-            data = image(:,:,i);
+            index = repmat({':'}, 1, ndims(image));
+            index{islices} = i;
+            data = image(index{:});
         else
             data = image;
         end

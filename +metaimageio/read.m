@@ -150,22 +150,24 @@ end
 if ~isempty(slices)
     shape = meta.DimSize;
     for i = 1:2
-        if numel(shape) == i
+        if meta.NDims == i
             shape(i+1) = 1;
         end
     end
+    islices = meta.NDims;
     if ~ismissing(meta.ElementNumberOfChannels) && meta.ElementNumberOfChannels > 1
         shape = [meta.ElementNumberOfChannels, shape];
+        islices = islices + 1;
     end
     element = cast(0, meta.ElementType); element = whos('element'); element_size = element.bytes; %#ok<NASGU>
     precision = sprintf('*%s', meta.ElementType);
     if ismissing(slices)
-        slices = 1:shape(3);
+        slices = 1:shape(islices);
     end
     assert(isequal(slices, sort(unique(slices))), 'Slices must be strictly increasing');
-    assert(slices(end) <= shape(3), 'Slices must be bounded by z dimension');
+    assert(slices(end) <= shape(islices), 'Slices must be bounded by z dimension');
     if numel(meta.ElementDataFile) > 1
-        shape(3) = 1;
+        shape(islices) = 1;
     end
     image = [];
 
@@ -188,12 +190,12 @@ if ~isempty(slices)
         if ~ismissing(meta.CompressedData) && meta.CompressedData
             assert(~ismissing(meta.CompressedDataSize), 'CompressedDataSize needs to be specified when using CompressedData');
             assert(ismissing(meta.HeaderSizePerSlice), 'HeaderSizePerSlice is not supported with compressed images');
-            assert((~ismissing(meta.ElementDataFile) && numel(meta.ElementDataFile) == 1) || all(slices == 1:shape(3)), 'Specifying slices with compressed images is not supported');            
+            assert((~ismissing(meta.ElementDataFile) && numel(meta.ElementDataFile) == 1) || all(slices == 1:shape(islices)), 'Specifying slices with compressed images is not supported');            
             image = fread(fid, meta.CompressedDataSize);
             image = zlib_decompress(image, meta.ElementType);
        else
             read = 0; seek = 0;
-            for j = 1:shape(3)
+            for j = 1:shape(meta.NDims)
                 if ~ismissing(meta.HeaderSizePerSlice)
                     image = [image, fread(fid, read, precision)]; %#ok<AGROW>
                     read = 0;
@@ -202,22 +204,19 @@ if ~isempty(slices)
                 if (numel(meta.ElementDataFile) == 1 && any(j == slices)) || (numel(meta.ElementDataFile) > 1 && any(i == slices))
                     fseek(fid, seek, 'cof');
                     seek = 0;
-                    read = read + prod(shape(1:2));
+                    read = read + prod(shape(1:islices));
                 else
                     image = [image, fread(fid, read, precision)]; %#ok<AGROW>
                     read = 0;
-                    seek = seek + prod(shape(1:2)) * element_size;
+                    seek = seek + prod(shape(1:islices)) * element_size;
                 end
             end
             image = [image, fread(fid, read, precision)]; %#ok<AGROW>
         end
         fclose(fid);
     end
-    shape(3) = numel(slices);
+    shape(islices) = numel(slices);
     image = reshape(image, shape);
-    if ~ismissing(meta.ElementNumberOfChannels) && meta.ElementNumberOfChannels > 1
-        image = permute(image, [(1:meta.NDims)+1, 1]);
-    end
     if (~ismissing(meta.BinaryDataByteOrderMSB) && meta.BinaryDataByteOrderMSB) || (~ismissing(meta.ElementByteOrderMSB) && meta.ElementByteOrderMSB)
         image = swapbytes(image);
     end
