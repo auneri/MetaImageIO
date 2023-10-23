@@ -1,18 +1,21 @@
 import metaimageio
 import numpy as np
 import pytest
-from test_io import file_with_suffix, SUFFIX
 try:
-    import imageio.v2 as imageio
-except ImportError:
-    import imageio
+    import imageio.v2 as iio
+except ModuleNotFoundError:
+    import imageio as iio
 
 
-@pytest.mark.parametrize('suffix', SUFFIX)
-def test_imageio(suffix):
+@pytest.fixture(scope='module')
+def imageio():
+    yield metaimageio.imageio()
+
+
+def test_imageio(imageio, filepath):
+    assert imageio == 'MetaImageIO'
     metaimageio.imageio()
-    with file_with_suffix(suffix) as f:
-        a = (100 * np.random.random_sample((2, 3, 4)))
-        imageio.imwrite(f, a, format='MetaImageIO')
-        b = imageio.imread(f, format='MetaImageIO')
-        np.testing.assert_almost_equal(b, a)
+    a = (100 * np.random.random_sample((4, 3, 2)))
+    iio.imwrite(filepath, a, format='MetaImageIO')
+    b = iio.imread(filepath, format='MetaImageIO')
+    np.testing.assert_almost_equal(b, a)
