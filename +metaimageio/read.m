@@ -91,7 +91,7 @@ while ~feof(fid)
         islocal = true;
         break
     elseif strcmpi(key, 'ElementDataFile') && contains(value, '%')
-        args = strsplit(value);
+        args = split(value, '("[^"]*")|(\s+)');
         i = cellfun(@str2num, args(2:end));
         meta_in.ElementDataFile = arrayfun(@(j) sprintf(args{1}, j), i(1):i(3):i(2), 'UniformOutput', false)';
     elseif strcmpi(key, 'ElementDataFile')
