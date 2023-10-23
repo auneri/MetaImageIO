@@ -58,8 +58,8 @@ class MetaImageIOFormat(Format):
 
 
 def imageio(name='MetaImageIO'):
-    if name.upper() not in formats.get_format_names():
-        names = formats.get_format_names()
+    names = formats.get_format_names()
+    if name.upper() not in names:
         formats.add_format(MetaImageIOFormat(
             name,
             'MetaImageIO',
