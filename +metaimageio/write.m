@@ -90,8 +90,8 @@ end
 element_data_file = meta.ElementDataFile;
 meta = rmfield(meta, 'ElementDataFile');
 meta.ElementDataFile = element_data_file;  % ensure ElementDataFile is the last tag
-[~, name, ext] = fileparts(filepath);
 if ismissing(meta.ElementDataFile)
+    [~, name, ext] = fileparts(filepath);
     if strcmpi(ext, '.mha')
         meta.ElementDataFile = 'LOCAL';
     elseif ~ismissing(meta.CompressedData) && meta.CompressedData
@@ -99,8 +99,6 @@ if ismissing(meta.ElementDataFile)
     else
         meta.ElementDataFile = sprintf('%s.raw', name);
     end
-elseif strcmpi(ext, '.mha') && ~strcmpi(meta.ElementDataFile, 'LOCAL')
-    error('metaimageio:write', 'ElementDataFile must be "LOCAL" for .mha files');
 end
 
 % handle ElementNumberOfChannels

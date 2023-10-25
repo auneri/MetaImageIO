@@ -91,8 +91,6 @@ def write(filepath, image=None, **kwargs):
             meta['ElementDataFile'] = filepath.with_suffix('.zraw').name
         else:
             meta['ElementDataFile'] = filepath.with_suffix('.raw').name
-    elif filepath.suffix == '.mha' and meta['ElementDataFile'].upper() != 'LOCAL':
-        raise ValueError('ElementDataFile must be "LOCAL" for .mha files')
 
     # handle ElementNumberOfChannels
     if meta['ElementNumberOfChannels'] is not None and meta['ElementNumberOfChannels'] > 1:
