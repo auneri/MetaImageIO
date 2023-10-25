@@ -5,7 +5,11 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.1...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.2...main) for detailed changes.
+
+## 1.2.2 -- 2023-10-25
+
+* Revert incorrect check for invalid ElementDataFile.
 
 ## 1.2.1 -- 2023-10-23
 
