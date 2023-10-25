@@ -13,31 +13,21 @@ See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.1...
 * Check for invalid ElementDataFile input for .mha files
 * Extended testing
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.0...v1.2.1) for detailed changes.
-
 ## 1.2.0 -- 2023-10-19
 
 * New non-standard tag, HeaderSizesPerDataFile.
 * Support spaces in ElementDataFile.
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.5...v1.2.0) for detailed changes.
-
 ## 1.1.5 -- 2023-10-12
 
 * Fix writing when ElementNumberOfChannels > 1.
-
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.4...v1.1.5) for detailed changes.
 
 ## 1.1.4 -- 2023-03-09
 
 * Fix broken package.
 * Reduce minimum required imageio version.
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.3...v1.1.4) for detailed changes.
-
 ## 1.1.3 -- 2023-02-23
-
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.2...v1.1.3) for detailed changes.
 
 * Fix use of relative paths with .mha files.
 
@@ -52,8 +42,6 @@ See [individual commits](https://github.com/auneri/metaimageio/compare/v1.1.0...
 * Skip unsupported field names when reading in MATLAB.
 
 ## 1.1.0 -- 2022-09-06
-
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.0.0...v1.1.0) for detailed changes.
 
 * Support for `ElementNumberOfChannels`.
 * Support for non-ndarray input image to `write`.
