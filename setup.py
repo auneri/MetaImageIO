@@ -25,6 +25,5 @@ setuptools.setup(
         'Programming Language :: Python :: 3'],
     packages=setuptools.find_packages(),
     install_requires=[
-        'imageio>=2.8',
         'numpy>=1.19'],
     python_requires='>=3.6')
