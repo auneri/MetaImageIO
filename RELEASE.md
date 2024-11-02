@@ -1,9 +1,10 @@
 # MetaImageIO Release Instructions
 
 1. Create a new tag
-    * update `__version__` and `CHANGELOG` with commit message "Release vX.X.X"
-    * add tag with message "Release vX.X.X"
-    * push changes to [metaimageio](https://github.com/auneri/metaimageio)
+
+    * Update `__version__` and `CHANGELOG` with commit message "Release vX.X.X"
+    * Add tag with message "Release vX.X.X"
+    * Push changes to [metaimageio](https://github.com/auneri/metaimageio)
 
 2. Upload new package to PyPI
 
@@ -18,5 +19,7 @@
     ```
 
 3. Upload new package to conda-forge
-    * make a pull request to [metaimageio-feedstock](https://github.com/conda-forge/metaimageio-feedstock)
-    * update `version` (should match `__version__`) and `hash` (should match PyPI) in `recipe/meta.yaml`
+
+    * If a pull request is not automatically triggered within 24 hr of the PyPI release:
+    * Make a pull request to [metaimageio-feedstock](https://github.com/conda-forge/metaimageio-feedstock)
+    * Update `version` (should match `__version__`) and `hash` (should match PyPI) in `recipe/meta.yaml`
