@@ -13,18 +13,26 @@ Support for reading and writing images in [MetaIO](https://itk.org/Wiki/ITK/Meta
 Install using `pip install metaimageio` or `conda install -c conda-forge metaimageio`.
 
 ```python
-import metaimageio
-image, meta = metaimageio.read('/path/to/input.mha')
-metaimageio.write('/path/to/output.mha', image, ElementSpacing=meta['ElementSpacing'])
+import metaimageio as mio
+image, meta = mio.read('/path/to/input.mha')
+mio.write('/path/to/output.mha', image, ElementSpacing=meta['ElementSpacing'])
 ```
 
-Add to [imageio](https://imageio.readthedocs.io) plugins.
+(Highly optional) Add to [imageio](https://imageio.readthedocs.io) plugins.
 
 ```python
-import imageio
-metaimageio.imageio()
-image = imageio.imread('/path/to/input.mha')
+import imageio.v2 as iio
+import metaimageio as mio
+mio.imageio()
+image = iio.imread('/path/to/input.mha', format='MetaImageIO')
 meta = image.meta
+```
+
+```python
+import imageio.v3 as iio
+from metaimageio.imageio import MetaImageIOPlugin
+image = iio.imread('/path/to/input.mha', plugin=MetaImageIOPlugin)
+meta = iio.immeta('/path/to/input.mha', plugin=MetaImageIOPlugin)
 ```
 
 ## Getting started in MATLAB
@@ -36,7 +44,7 @@ Install using the [Add-On Manager](https://www.mathworks.com/help/matlab/matlab_
 metaimageio.write('/path/to/output.mha', image, 'ElementSpacing', meta.ElementSpacing);
 ```
 
-Add to [image file format registry](https://www.mathworks.com/help/matlab/ref/imformats.html).
+(Optional) Add to [image file format registry](https://www.mathworks.com/help/matlab/ref/imformats.html).
 
 ```matlab
 metaimageio.imformats();
