@@ -15,7 +15,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3"]
 dependencies = [
-    "numpy>=1.19"]
+    "numpy>=1.26"]
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
@@ -34,6 +34,9 @@ flake8 = [
     "pep8-naming"]
 imageio = [
     "imageio"]
+pytest = [
+    "pytest",
+    "pytest-cov"]
 
 [project.urls]
 Homepage = "https://auneri.github.io/MetaImageIO"
