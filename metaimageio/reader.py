@@ -123,7 +123,7 @@ def read(filepath, slices=None, memmap=False):
 
     # read image from file
     shape = meta['DimSize'].copy()[::-1]
-    if (meta.get('ElementNumberOfChannels') or 1) > 1:
+    if meta.get('ElementNumberOfChannels', 1) > 1:
         shape = np.r_[shape, meta['ElementNumberOfChannels']]
     element_size = np.dtype(meta['ElementType']).itemsize
     if memmap:
@@ -145,7 +145,7 @@ def read(filepath, slices=None, memmap=False):
         offset = 0
         if islocal:
             offset += meta_size
-        offset += meta.get('HeaderSize') or 0
+        offset += meta.get('HeaderSize', 0)
         image = np.memmap(datapath, dtype=meta['ElementType'], mode='c', offset=offset, shape=tuple(shape))
     else:
         increment = np.prod(shape[1:], dtype=np.uintp) * np.uintp(element_size)
@@ -167,7 +167,7 @@ def read(filepath, slices=None, memmap=False):
             with datapath.open('rb') as f:
                 if islocal:
                     f.seek(meta_size, 1)
-                f.seek((meta.get('HeaderSize') or 0), 1)
+                f.seek(meta.get('HeaderSize', 0), 1)
                 if meta['HeaderSizesPerDataFile'] is not None:
                     f.seek(meta['HeaderSizesPerDataFile'][i], 1)
                 if meta.get('CompressedData'):
