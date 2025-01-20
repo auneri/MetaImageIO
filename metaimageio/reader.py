@@ -102,6 +102,9 @@ def read(filepath, slices=None, memmap=False):
         if key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'):
             meta[key] = value
         elif key in ('NDims', 'ID', 'ParentID', 'CompressedDataSize', 'HeaderSize', 'HeaderSizePerSlice', 'ElementNumberOfChannels'):
+            # skip header if size is -1 (https://github.com/Kitware/MetaIO/blob/56c9257467fa901e51e67ca5934711869ed84e49/src/metaImage.cxx#L2606)
+            if key == 'HeaderSize' and int(value) == -1:
+                value = 0
             meta[key] = np.uintp(value)
         elif key in ('CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'):
             meta[key] = value.upper() == 'TRUE'

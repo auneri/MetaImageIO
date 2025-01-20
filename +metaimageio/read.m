@@ -110,6 +110,10 @@ for fieldname = fieldnames(meta_in)'
         case {'Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'}
             meta.(key) = value;
         case {'NDims', 'ID', 'ParentID', 'CompressedDataSize', 'HeaderSize', 'HeaderSizePerSlice', 'ElementNumberOfChannels', 'ElementMin', 'ElementMax'}
+            % skip header if size is -1 (https://github.com/Kitware/MetaIO/blob/56c9257467fa901e51e67ca5934711869ed84e49/src/metaImage.cxx#L2606)
+            if strcmpi(key, 'HeaderSize') && str2double(value) == -1
+                value = 0;
+            end
             meta.(key) = str2double(value);
         case {'CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'}
             meta.(key) = strcmpi(value, 'true');
