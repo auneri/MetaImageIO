@@ -191,7 +191,7 @@ if ~isempty(slices)
         if ~ismissing(meta.CompressedData) && meta.CompressedData
             assert(~ismissing(meta.CompressedDataSize), 'CompressedDataSize needs to be specified when using CompressedData');
             assert(ismissing(meta.HeaderSizePerSlice), 'HeaderSizePerSlice is not supported with compressed images');
-            assert((~ismissing(meta.ElementDataFile) && numel(meta.ElementDataFile) == 1) || all(slices == 1:shape(islices)), 'Specifying slices with compressed images is not supported');            
+            assert((~ismissing(meta.ElementDataFile) && isscalar(meta.ElementDataFile)) || all(slices == 1:shape(islices)), 'Specifying slices with compressed images is not supported');            
             image = fread(fid, meta.CompressedDataSize);
             image = zlib_decompress(image, meta.ElementType);
        else
@@ -202,7 +202,7 @@ if ~isempty(slices)
                     read = 0;
                     seek = seek + meta.HeaderSizePerSlice;
                 end
-                if (numel(meta.ElementDataFile) == 1 && any(j == slices)) || (numel(meta.ElementDataFile) > 1 && any(i == slices))
+                if (isscalar(meta.ElementDataFile) && any(j == slices)) || (numel(meta.ElementDataFile) > 1 && any(i == slices))
                     fseek(fid, seek, 'cof');
                     seek = 0;
                     read = read + prod(shape(1:islices));
