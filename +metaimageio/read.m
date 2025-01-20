@@ -105,19 +105,20 @@ fclose(fid);
 meta = cell2struct(repmat({missing}, size(TAGS)), TAGS, 2);
 for fieldname = fieldnames(meta_in)'
     key = char(fieldname);
+    value = meta_in.(key);
     switch key
         case {'Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality', 'ElementDataFile'}
-            meta.(key) = meta_in.(key);
+            meta.(key) = value;
         case {'NDims', 'ID', 'ParentID', 'CompressedDataSize', 'HeaderSize', 'HeaderSizePerSlice', 'ElementNumberOfChannels', 'ElementMin', 'ElementMax'}
-            meta.(key) = str2double(meta_in.(key));
+            meta.(key) = str2double(value);
         case {'CompressedData', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB'}
-            meta.(key) = strcmpi(meta_in.(key), 'true');
+            meta.(key) = strcmpi(value, 'true');
         case {'Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'ElementSize', 'DimSize', 'HeaderSizesPerDataFile', 'SequenceID'}
-            meta.(key) = str2num(meta_in.(key)); %#ok<ST2NM>
+            meta.(key) = str2num(value); %#ok<ST2NM>
         case {'Orientation', 'Rotation', 'TransformMatrix'}
-            meta.(key) = reshape(str2num(meta_in.(key)), str2double(meta_in.NDims), str2double(meta_in.NDims)); %#ok<ST2NM>
+            meta.(key) = reshape(str2num(value), str2double(meta_in.NDims), str2double(meta_in.NDims)); %#ok<ST2NM>
         case 'ElementType'
-            switch meta_in.(key)
+            switch value
                 case 'MET_CHAR'
                     meta.(key) = 'int8';
                 case 'MET_UCHAR'
@@ -139,10 +140,10 @@ for fieldname = fieldnames(meta_in)'
                 case 'MET_DOUBLE'
                     meta.(key) = 'double';
                 otherwise
-                    error('metaimageio:read', 'ElementType "%s" is not supported', meta_in.(key));
+                    error('metaimageio:read', 'ElementType "%s" is not supported', value);
             end
         otherwise
-            meta.(key) = meta_in.(key);
+            meta.(key) = value;
     end
 end
 
