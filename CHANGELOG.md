@@ -5,7 +5,14 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.2...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.3.0...main) for detailed changes.
+
+## 1.3.0 -- 2025-01-21
+
+* Update packaging to use pyproject.toml.
+* Deploy pip package using GitHub actions.
+* Skip header if size is -1.
+* Make imageio a soft dependency.
 
 ## 1.2.2 -- 2023-10-25
 
@@ -13,9 +20,9 @@ See [individual commits](https://github.com/auneri/metaimageio/compare/v1.2.2...
 
 ## 1.2.1 -- 2023-10-23
 
-* Implement latest changes and fixes in MATLAB
-* Check for invalid ElementDataFile input for .mha files
-* Extended testing
+* Implement latest changes and fixes in MATLAB.
+* Check for invalid ElementDataFile input for .mha files.
+* Extended testing.
 
 ## 1.2.0 -- 2023-10-19
 
