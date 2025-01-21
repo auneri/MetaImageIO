@@ -51,3 +51,10 @@ metaimageio.imformats();
 image = imread('/path/to/input.mha');
 meta = imfinfo('/path/to/input.mha');
 ```
+
+## Making a new release
+
+1. Update `project.version` in `pyproject.toml` and `CHANGELOG` with commit message "Release vX.X.X"
+2. Add tag vX.X.X with message "Release vX.X.X"
+3. Create a new release on [metaimageio](https://github.com/auneri/metaimageio)
+4. Merge the auto-generated pull request on [metaimageio-feedstock](https://github.com/conda-forge/metaimageio-feedstock)
