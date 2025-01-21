@@ -33,7 +33,7 @@ flake8 = [
     "flake8-use-pathlib",
     "pep8-naming"]
 imageio = [
-    "imageio"]
+    "imageio>=2.28"]
 pytest = [
     "pytest",
     "pytest-cov"]
