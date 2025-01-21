@@ -22,8 +22,7 @@ mio.write('/path/to/output.mha', image, ElementSpacing=meta['ElementSpacing'])
 
 ```python
 import imageio.v2 as iio
-import metaimageio as mio
-mio.imageio()
+mio.imageio.add_format()
 image = iio.imread('/path/to/input.mha', format='MetaImageIO')
 meta = image.meta
 ```

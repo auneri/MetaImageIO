@@ -98,7 +98,7 @@ try:
                 _ = meta
                 raise NotImplementedError('MetaImageIO does not support writing meta data')
 
-    def imageio(name='MetaImageIO'):
+    def add_format(name='MetaImageIO'):
         names = formats.get_format_names()
         if name.upper() not in names:
             formats.add_format(MetaImageIOFormat(
