@@ -5,7 +5,12 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.3.0...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.3.1...main) for detailed changes.
+
+## 1.3.1 -- 2025-01-22
+
+* Support for imageio v3 API.
+* Remove imageio from conda package dependencies.
 
 ## 1.3.0 -- 2025-01-21
 
