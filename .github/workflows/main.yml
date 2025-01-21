@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
 
-  build:
-    name: build (${{ matrix.os }}, python-${{ matrix.python-version }})
+  test:
+    name: test (${{ matrix.os }}, python-${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -15,12 +15,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: actions/setup-python@v4
         with:
-          activate-environment: env
-          auto-update-conda: true
           python-version: ${{ matrix.python-version }}
       - run: |
           python -m pip install .[flake8,pytest]
-          pytest .
-          pytest --cov .
+          python -m pytest .
+          python -m pytest --cov .
