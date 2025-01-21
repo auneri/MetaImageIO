@@ -66,3 +66,6 @@ add-ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107"]
 # D105: missing docstring in magic method
 # D106: missing docstring in public nested class
 # D107: missing docstring in __init__
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider"
