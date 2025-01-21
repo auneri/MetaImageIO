@@ -1,6 +1,9 @@
 import metaimageio
 import numpy as np
 import pytest
+
+imageio = pytest.importorskip('imageio')
+
 try:
     import imageio.v2 as iio
 except ModuleNotFoundError:
