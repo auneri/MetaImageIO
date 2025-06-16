@@ -187,7 +187,7 @@ def read(filepath, slices=None, memmap=False):
                         if meta['HeaderSizePerSlice'] is not None:
                             data.write(f.read(read))
                             read = np.uintp(0)
-                            seek += meta['HeaderSizePerSlice']
+                            seek += np.uintp(meta['HeaderSizePerSlice'])
                         if (len(meta['ElementDataFile']) == 1 and j in slices) or (len(meta['ElementDataFile']) > 1 and i in slices):
                             f.seek(seek, 1)
                             seek = np.uintp(0)
