@@ -1,10 +1,10 @@
+import contextlib
 import io
 import pathlib
 import shlex
 import zlib
 
 import numpy as np
-
 
 # https://itk.org/Wiki/ITK/MetaIO/Documentation#Reference:_Tags_of_MetaImage
 TAGS = (
@@ -75,10 +75,8 @@ def read(filepath, slices=None, memmap=False):
             key = line.split('=', 1)[0].strip()
             value = line.split('=', 1)[-1].strip()
             # handle case variations
-            try:
+            with contextlib.suppress(ValueError):
                 key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
-            except ValueError:
-                pass
             meta_in[key] = value
             # handle supported ElementDataFile formats
             if islist:

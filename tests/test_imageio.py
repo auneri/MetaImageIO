@@ -1,17 +1,16 @@
-import metaimageio
 import numpy as np
 import pytest
-
-pytest.importorskip('imageio')
 
 
 def test_imageio_v2(filepath):
     try:
         import imageio.v2 as iio
     except ModuleNotFoundError:
-        import imageio as iio
-    metaimageio.imageio()
-    a = (100 * np.random.random_sample((4, 3, 2)))
+        pytest.skip()
+    from metaimageio.imageio import add_format
+    add_format()
+    rng = np.random.default_rng()
+    a = (100 * rng.random((4, 3, 2)))
     iio.imwrite(filepath, a, format='MetaImageIO')
     b = iio.imread(filepath, format='MetaImageIO')
     np.testing.assert_almost_equal(b, a)
@@ -25,7 +24,8 @@ def test_imageio_v3(filepath):
     except ModuleNotFoundError:
         pytest.skip()
     from metaimageio.imageio import MetaImageIOPlugin
-    a = (100 * np.random.random_sample((4, 3, 2)))
+    rng = np.random.default_rng()
+    a = (100 * rng.random((4, 3, 2)))
     iio.imwrite(filepath, a, plugin=MetaImageIOPlugin)
     b = iio.imread(filepath, plugin=MetaImageIOPlugin)
     np.testing.assert_almost_equal(b, a)

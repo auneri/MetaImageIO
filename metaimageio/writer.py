@@ -1,8 +1,8 @@
+import contextlib
 import pathlib
 import zlib
 
 import numpy as np
-
 
 # https://itk.org/Wiki/ITK/MetaIO/Documentation#Reference:_Tags_of_MetaImage
 TAGS = (
@@ -76,10 +76,8 @@ def write(filepath, image=None, **kwargs):
 
     # input metadata (case incensitive)
     for key, value in kwargs.items():
-        try:
+        with contextlib.suppress(ValueError):
             key = TAGS[[x.upper() for x in TAGS].index(key.upper())]
-        except ValueError:
-            pass
         meta[key] = value
 
     # define ElementDataFile
@@ -128,11 +126,15 @@ def write(filepath, image=None, **kwargs):
     for key, value in meta.items():
         if value is None:
             continue
-        elif key in ('Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality'):
+        if key in (
+                'Comment', 'ObjectType', 'ObjectSubType', 'TransformType', 'Name', 'AnatomicalOrientation', 'Modality'):
             meta_out[key] = value
-        elif key in ('NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin', 'ElementMax', 'ElementNumberOfChannels'):
+        elif key in (
+                'NDims', 'ID', 'ParentID', 'CompressedData', 'CompressedDataSize', 'BinaryData', 'BinaryDataByteOrderMSB', 'ElementByteOrderMSB', 'HeaderSize', 'HeaderSizePerSlice', 'ElementMin',
+                'ElementMax', 'ElementNumberOfChannels'):
             meta_out[key] = str(value)
-        elif key in ('Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'HeaderSizesPerDataFile', 'SequenceID', 'ElementSize'):
+        elif key in (
+                'Color', 'Position', 'Offset', 'Origin', 'CenterOfRotation', 'ElementSpacing', 'DimSize', 'HeaderSizesPerDataFile', 'SequenceID', 'ElementSize'):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(value))
         elif key in ('Orientation', 'Rotation', 'TransformMatrix'):
             meta_out[key] = ' '.join(str(x) for x in np.ravel(np.transpose(value)))
@@ -166,6 +168,4 @@ def write(filepath, image=None, **kwargs):
                 f.write(datas[i])
 
     # remove unused metadata
-    meta = {x: y for x, y in meta.items() if y is not None}
-
-    return meta
+    return {x: y for x, y in meta.items() if y is not None}
