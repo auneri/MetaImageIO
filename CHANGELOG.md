@@ -5,7 +5,12 @@ and the format of this document is based on [Keep a Changelog](http://keepachang
 
 ## Unreleased
 
-See [individual commits](https://github.com/auneri/metaimageio/compare/v1.3.1...main) for detailed changes.
+See [individual commits](https://github.com/auneri/metaimageio/compare/v1.3.2...main) for detailed changes.
+
+## 1.3.2 -- 2025-07-04
+
+* Ensure HeaderSizePerSlice is unsigned int.
+* Switch from flake8 to ruff.
 
 ## 1.3.1 -- 2025-01-22
 
