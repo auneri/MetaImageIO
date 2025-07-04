@@ -19,24 +19,12 @@ dependencies = [
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
-flake8 = [
-    "flake8",
-    "flake8-bugbear",
-    "flake8-builtins",
-    "flake8-comprehensions",
-    "flake8-docstrings",
-    "flake8-import-order",
-    "flake8-mutable",
-    "flake8-pyproject",
-    "flake8-quotes",
-    "flake8-use-fstring",
-    "flake8-use-pathlib",
-    "pep8-naming"]
 imageio = [
     "imageio>=2.28"]
 pytest = [
     "pytest",
-    "pytest-cov"]
+    "pytest-cov",
+    "pytest-ruff"]
 
 [project.urls]
 Homepage = "https://auneri.github.io/MetaImageIO"
@@ -45,27 +33,50 @@ Repository = "https://github.com/auneri/MetaImageIO"
 [tool.setuptools.packages.find]
 where = ["."]
 
-[tool.flake8]
-extend-ignore = [
-    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
-    "E231", "E501"]
-import-order-style = "smarkets"
-
-[tool.pycodestyle]
-ignore = ["E231", "E501"]
-# E231: missing whitespace after ',', ';', or ':'
-# E501: line too long (> 79 characters)
-
-[tool.pydocstyle]
-add-ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107"]
-# D100: missing docstring in public module
-# D101: missing docstring in public class
-# D102: missing docstring in public method
-# D103: missing docstring in public function
-# D104: missing docstring in public package
-# D105: missing docstring in magic method
-# D106: missing docstring in public nested class
-# D107: missing docstring in __init__
-
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider"
+addopts = "-p no:cacheprovider --cov=metaimageio --cov-report=term --ruff"
+
+[tool.ruff]
+exclude = ["*.ipynb"]
+line-length = 200
+
+[tool.ruff.lint]
+select = [
+    "A",  # flake8-builtins
+    "ARG",  # flake8-unused-arguments
+    "B",  # flake8-bugbear
+    "BLE",  # flake8-blind-except
+    "C4",  # flake8-comprehensions
+    "COM",  # flake8-commas
+    "E",  # pycodestyle errors
+    "ERA",  # eradicate
+    "EXE",  # flake8-executable
+    "F",  # Pyflakes
+    "FIX",  # flake8-fixme
+    "FLY",  # flynt
+    "FURB",  # refurb
+    "I",  # isort
+    "ICN",  # flake8-import-conventions
+    "LOG",  # flake8-logging
+    "N",  # pep8-naming
+    "NPY",  # NumPy-specific rules
+    "PD",  # pandas-vet
+    "PERF",  # Perflint
+    "PIE",  # flake8-pie
+    "PTH",  # flake8-use-pathlib
+    "PYI",  # flake8-pyi
+    "Q",  # flake8-quotes
+    "RET",  # flake8-return
+    "RSE",  # flake8-raise
+    "S",  # flake8-bandit
+    "SIM",  # flake8-simplify
+    "SLF",  # flake8-self
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warnings
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
